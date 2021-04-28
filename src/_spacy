@@ -1,0 +1,18 @@
+#compdef spacy
+
+local -a subcmds
+
+subcmds=(  
+  "convert":"Convert files into json or DocBin format for..." 
+  "debug":"Suite of helpful commands for debugging and..." 
+  "download":"Download compatible trained pipeline from the..." 
+  "evaluate":"Evaluate a trained pipeline." 
+  "info":"Print info about spaCy installation." 
+  "init":"Commands for initializing configs and..." 
+  "package":"Generate an installable Python package for a..." 
+  "pretrain":"Pre-train the ''token-to-vector'' (tok2vec)..." 
+  "project":"Command-line interface for spaCy projects and..." 
+  "train":"Train or update a spaCy pipeline." 
+  "validate":"Validate the currently installed pipeline..." 
+)
+_describe "spacy" subcmds
