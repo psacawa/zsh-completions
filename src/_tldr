@@ -1,0 +1,7 @@
+#compdef tldr
+
+local -a options
+
+options=("${(f)$(tldr -l1)}")
+
+_describe tldr options
