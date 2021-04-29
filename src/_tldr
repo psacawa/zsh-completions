@@ -2,6 +2,6 @@
 
 local -a options
 
-options=("${(f)$(tldr -l1)}")
+options=("${(f)$(tldr -l1 | awk 'NR>1{print $0}')}")
 
 _describe tldr options
