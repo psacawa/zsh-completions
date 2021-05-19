@@ -1,0 +1,23 @@
+#compdef test
+_arguments -s \
+ "-n[the length of string is nonzero]" \
+ "-z[the length of string is zero]" \
+ "-b[file exists and is block special]" \
+ "-c[file exists and is character special]" \
+ "-d[file exists and is a directory]" \
+ "-e[file exists]" \
+ "-f[file exists and is a regular file]" \
+ "-g[file exists and is set-group-ID]" \
+ "-G[file exists and is owned by the effective group ID]" \
+ "-h[file exists and is a symbolic link (same as -L)]" \
+ "-k[file exists and has its sticky bit set]" \
+ "-L[file exists and is a symbolic link (same as -h)]" \
+ "-O[file exists and is owned by the effective user ID]" \
+ "-p[file exists and is a named pipe]" \
+ "-r[file exists and read permission is granted]" \
+ "-s[file exists and has a size greater than zero]" \
+ "-S[file exists and is a socket]" \
+ "-t[]" \
+ "-u[file exists and its set-user-ID bit is set]" \
+ "-w[file exists and write permission is granted]" \
+ "-x[file exists and execute (or search) permission is granted]"
