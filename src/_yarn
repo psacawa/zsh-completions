@@ -1,465 +1,688 @@
-#compdef yarn
-# ------------------------------------------------------------------------------
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#     * Redistributions of source code must retain the above copyright
-#       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
-#     * Neither the name of the zsh-users nor the
-#       names of its contributors may be used to endorse or promote products
-#       derived from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL ZSH-USERS BE LIABLE FOR ANY
-# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# ------------------------------------------------------------------------------
-# Description
-# -----------
-#
-#  Completion script for yarn (https://yarnpkg.com/)
-#
-# ------------------------------------------------------------------------------
-# Authors
-# -------
-#
-#  * Massimiliano Torromeo <massimiliano.torromeo@gmail.com>
-#  * Shohei YOSHIDA <syohex@gmail.com>
-#
-# ------------------------------------------------------------------------------
+#compdef _yarn_completion yarn
 
-declare -g _yarn_run_cwd
+_yarn_recursively_look_for() {
+  local dir
+  local filename="$1"
+  local workspace_path="$2"
 
-_commands=(
-  'access'
-  'audit:Checks for known security issues with the installed packages'
-  'autoclean:Clean and remove unnecessary files from package dependencies'
-  'cache:List or clean every cached package'
-  "check:Verify package dependencies against yarn's lock file"
-  'config:Manages the yarn configuration files'
-  'create:Creates new projects from any create-* starter kits'
-  'exec'
-  'generate-lock-entry:Generates a lock file entry'
-  'global:Install packages globally on your operating system'
-  'help:Show information about a command'
-  'import:Generate yarn.lock from an existing npm-installed node_modules folder'
-  'info:Show information about a package'
-  'init:Interactively creates or updates a package.json file'
-  'install:Install all the dependencies listed within package.json'
-  'licenses:List licenses for installed packages'
-  'link:Symlink a package folder during development'
-  'login:Store registry username and email'
-  'logout:Clear registry username and email'
-  'node:Runs Node with the same version that the one used by Yarn itself'
-  'outdated:Check for outdated package dependencies'
-  'owner:Manage package owners'
-  'pack:Create a compressed gzip archive of package dependencies'
-  'policies:Defines project-wide policies for your project'
-  'publish:Publish a package to the npm registry'
-  'run:Run a defined package script'
-  'tag:Add, remove, or list tags on a package'
-  'team:Maintain team memberships'
-  'unlink:Unlink a previously created symlink for a package'
-  'unplug:Temporarily copies a package outside of the global cache for debugging purposes'
-  'version:Update the package version'
-  'versions:Display version information of currently installed Yarn, Node.js, and its dependencies'
-  'why:Show information about why a package is installed'
-  'workspace'
-  'workspaces:Show information about your workspaces'
-)
-
-_global_commands=(
-  'add:Installs a package and any packages that it depends on'
-  'bin:Displays the location of the yarn bin folder'
-  'list:List installed packages'
-  'remove:Remove installed package from dependencies updating package.json'
-  'upgrade:Upgrades packages to their latest version based on the specified range'
-  'upgrade-interactive:Interactively upgrade packages'
-)
-
-_yarn_commands_scripts() {
-  local -a scripts
-  if [[ -n $opt_args[--cwd] ]]; then
-    scripts=($(cd $opt_args[--cwd] && yarn run --json 2>/dev/null | sed -E '/Commands available|possibleCommands/!d;s/.*Commands available from binary scripts: ([^"]+)".*/\1/;s/.*"items":\[([^]]+).*/\1/;s/[" ]//g' | tr , '\n' | sed -e 's/:/\\:/g'))
-  else
-    scripts=($(yarn run --json 2>/dev/null | sed -E '/Commands available|possibleCommands/!d;s/.*Commands available from binary scripts: ([^"]+)".*/\1/;s/.*"items":\[([^]]+).*/\1/;s/[" ]//g' | tr , '\n' | sed -e 's/:/\\:/g'))
+  if [[ -z $workspace_path ]]; then
+    dir="$PWD"
+  elif [[ -n $workspace_path ]]; then
+    dir="$PWD/$workspace_path"
   fi
 
-  _describe 'command or script' _commands -- _global_commands -- scripts
-}
-
-_yarn_scripts() {
-  local -a commands binaries scripts
-  local -a scriptNames scriptCommands
-  local i runJSON
-
-  if [[ -n $_yarn_run_cwd ]]; then
-    runJSON=$(cd $_yarn_run_cwd && yarn run --json 2>/dev/null)
-  else
-    runJSON=$(yarn run --json 2>/dev/null)
-  fi
-  # Some sed utilities (e.g. Mac OS / BSD) don't interpret `\n` in a replacement
-  # pattern as a newline. See https://superuser.com/q/307165
-  binaries=($(sed -E '/Commands available/!d;s/.*Commands available from binary scripts: ([^"]+)".*/\1/;s/.*"items":\[([^]]+).*/\1/;s/[" ]//g;s/:/\\:/g;s/,/\'$'\n/g' <<< "$runJSON"))
-  scriptNames=($(sed -E '/possibleCommands/!d;s/.*"items":\[([^]]+).*/\1/;s/[" ]//g;s/:/\\:/g;s/,/\'$'\n/g' <<< "$runJSON"))
-  scriptCommands=("${(@f)$(sed -E '/possibleCommands/!d;s/.*"hints":\{(.+")\}.*/\1/;s/"[^"]+"://g;s/:/\\:/g;s/","/\'$'\n/g;s/(^"|"$)//g' <<< "$runJSON")}")
-
-  for (( i=1; i <= $#scriptNames; i++ )); do
-    scripts+=("${scriptNames[$i]}:${scriptCommands[$i]}")
+  while [ ! -e "$dir/$filename" ]; do
+    dir=${dir%/*}
+    [[ "$dir" = "" ]] && break
   done
 
-  commands=('env' $scripts $binaries)
-  _describe 'command' commands
+  [[ ! "$dir" = "" ]] && echo "$dir/$filename"
+}
+
+_yarn_get_package_json_property_object() {
+  local package_json="$1"
+  local property="$2"
+
+  # cat command prints package.json file
+  # first sed command grabs scripts object
+  # second sed command removes first & last lines
+  # third sed command parses into key=>value
+  cat "$package_json" |
+    sed -nE "/^[  ]+\"$property\": \{$/,/^[  ]+\},?$/p" |
+    sed '1d;$d' |
+    sed -E 's/[  ]+"([^"]+)": "(.+)",?/\1=>\2/'
+}
+
+_yarn_get_package_json_property_object_keys() {
+  local package_json="$1"
+  local property="$2"
+
+  _yarn_get_package_json_property_object "$package_json" "$property" | cut -f 1 -d "="
+}
+
+_yarn_parse_package_json_for_script_suggestions() {
+  local package_json="$1"
+
+  # first sed command parses commands info suggestions
+  # second sed command escapes ":" in commands
+  # third sed command escapes ":$" without a space in commands
+  _yarn_get_package_json_property_object "$package_json" scripts |
+    sed -E 's/(.+)=>(.+)/\1:$ \2/' |
+    sed 's/\(:\)[^$]/\\&/g' |
+    sed 's/\(:\)$[^ ]/\\&/g'
+}
+
+_yarn_parse_package_json_for_deps() {
+  local package_json="$1"
+
+  _yarn_get_package_json_property_object_keys "$package_json" dependencies
+  _yarn_get_package_json_property_object_keys "$package_json" devDependencies
+}
+
+_yarn_get_scripts_from_package_json() {
+  local package_json
+  package_json="$(_yarn_recursively_look_for package.json)"
+
+  [[ "$package_json" = "" ]] && return
+
+  local -a options
+  options=(
+    ${(f)"$(_yarn_parse_package_json_for_script_suggestions $package_json)"} \
+    env:"Prints list of environment variables available to the scripts at runtime" \
+  )
+
+  _describe -t package-scripts "package scripts" options
+}
+
+_yarn_get_scripts_from_workspace_package_json() {
+  local -a options
+
+  package_json="$(_yarn_recursively_look_for package.json "$location")"
+
+  [[ "$package_json" = "" ]] && return
+
+  options=(
+    ${(f)"$(_yarn_parse_package_json_for_script_suggestions $package_json)"} \
+    env:"Prints list of environment variables available to the scripts at runtime" \
+  )
+
+  _describe -t package-scripts "package scripts" options
+}
+
+_yarn_get_packages_from_package_json() {
+  local package_json
+  package_json="$(_yarn_recursively_look_for package.json)"
+
+  # Return if we can’t find package.json
+  [[ "$package_json" = "" ]] && return
+
+  _values \
+  "description" \
+  $(_yarn_parse_package_json_for_deps "$package_json")
+}
+
+_yarn_get_packages_from_global_package_json() {
+  local global_dir
+  global_dir="$(yarn global dir)"
+  local package_json
+  package_json="$global_dir/package.json"
+
+  # Return if we can’t find package.json
+  [[ "$package_json" = "" ]] && return
+
+  _values \
+  "description" \
+  $(_yarn_parse_package_json_for_deps "$package_json")
+}
+
+_yarn_get_packages_from_workspace_package_json() {
+  local package_json
+
+  package_json="$(_yarn_recursively_look_for package.json $location)"
+
+  # Return if we can’t find package.json
+  [[ "$package_json" = "" ]] && return
+
+  _values $(_yarn_parse_package_json_for_deps "$package_json")
+}
+
+_yarn_completion_global_commands() {
+  case $words[2] in
+    add)
+      _values $(_yarn_get_cached_packages) \
+    ;;
+    remove)
+      _yarn_get_packages_from_global_package_json
+    ;;
+    upgrade | uprade-interactive)
+      _yarn_get_packages_from_global_package_json
+    ;;
+  esac
+}
+
+_yarn_get_cached_packages() { # todo: find faster method to get cached packages
+  yarn cache list |
+  awk '{ print $1 }' |
+  sed '1d;2d;$d'
+}
+
+_yarn_get_workspaces() { # add condition if pwd is not yarn workspace
+  local -a workspaces
+  local object
+
+  # get workspace metadata as json object or assign string 'error' to variable
+  # `object`
+  object="$(
+    yarn workspaces info ||
+    echo 'error'
+  )"
+
+  if [[ ! $object =~ 'error' ]]; then
+    # the first sed command extracts workspace name keys from the json input;
+    # the second sed command removes quotes, spaces, colon, and brace
+    for workspace in $(
+      echo $object |
+      sed -nE '/".+": \{/p' |
+      sed -e 's/^[ "]*//' -e 's/\(": {\)*$//' ||
+    ); do
+      workspaces+=($workspace)
+    done
+
+    _describe -t workspace-names "workspaces names" workspaces
+  fi
+}
+
+_yarn_workspace_commands() {
+  local location workspace_name package_json
+
+  workspace_name="$(echo $1 | sed 's/\(\/\)[^$]/\\&/g')"
+
+  location="$(
+    yarn workspaces info --json |
+    sed -nE "/^[  ]+\"$workspace_name\": \{$/,/^[   ]+\},?$/p" |
+    sed '1d;$d' |
+    grep "location" |
+    sed 's/.*: "\(.*\)",/\1/'
+  )"
+
+  case $words[3] in
+    add)
+      _values $(_yarn_get_cached_packages) \
+      && return
+    ;;
+    remove)
+      _yarn_get_packages_from_workspace_package_json \
+      && return
+    ;;
+    upgrade | upgrade-interactive)
+      _yarn_get_packages_from_workspace_package_json \
+      && return
+    ;;
+    run)
+      [[ $CURRENT == 5 ]] && return
+      _yarn_get_scripts_from_workspace_package_json \
+      && return
+    ;;
+    cache)
+      [[ $CURRENT == 3 ]] && return
+      local -a list
+
+      list=(
+        list:"Prints out every cached package"
+        dir:"Prints out the path where yarn’s global cache is currently stored."
+        clean:"Command will clear the global cache."
+      )
+
+      _describe -t cache-commands "cache commands" list \
+      && return
+    ;;
+    config)
+      [[ $CURRENT == 5 ]] && return
+      local -a list
+
+      list=(
+        set:"Sets the config key to a certain value."
+        get:"Echoes the value for a given key to stdout."
+        delete:"Deletes a given key from the config."
+        list:"Displays the current configuration."
+      )
+
+      _describe -t config-commands "config commands" list \
+      && return
+    ;;
+    help)
+      [[ $CURRENT == 5 ]] && return
+
+      _alternative \
+        "global-commands:global:_yarn_global_commands" \
+        "common-workspace-commands:workspace:_yarn_common_workspace_commands" \
+      && return
+    ;;
+    info)
+      [[ $CURRENT == 5 ]] && return
+      _values $(_yarn_get_cached_packages) \
+      && return
+    ;;
+    licenses)
+      [[ $CURRENT == 5 ]] && return
+      local -a list
+
+      list=(
+        list:"List licenses for installed packages."
+        generate-disclaimer:"Running this command will return a sorted list of licenses from all the packages you have installed to the stdout."
+      )
+
+
+      _describe -t licenses-commands "licenses commands" list \
+      && return
+    ;;
+    owner)
+      [[ $CURRENT == 5 ]] && return
+      local -a list
+
+      list=(
+        list:"Lists all of the owners of a <package>."
+        add:"Adds the <user> as an owner of the <package>. You must already be an owner of the <package> in order to run this command."
+        remove:"Removes the <user> as an owner of the <package>. You must already be an owner of the <package> in order to run this command."
+      )
+
+      _describe -t owner-commands "owner commands" list \
+      && return
+    ;;
+    policies)
+      [[ $CURRENT == 5 ]] && return
+      local -a list
+
+      list=(
+        set-version:"Defines project-wide policies for your project."
+      )
+
+      _describe -t policies-commands "policies commands" list \
+      && return
+    ;;
+    tab)
+      [[ $CURRENT == 5 ]] && return
+      local -a list
+
+      list=(
+        add:"Add a tag named <tag> for a specific <version> of a <package>."
+        remove:"Remove a tag named <tag> from a <package> that is no longer in use."
+        list:"List all of the tags for a <package>. If unspecified <package> will default to the package you’re currently inside the directory of."
+      )
+
+      _describe -t tab-commands "tag commands" list \
+      && return
+    ;;
+    team)
+      [[ $CURRENT == 5 ]] && return
+      local -a list
+
+      list=(
+        create:"Create a new team."
+        destroy:"Destroys an existing team."
+        add:"Add a user to an existing team."
+        remove:"Remove a user from a team they belong to."
+        list:"If performed on an organization name, will return a list of existing teams under that organization. If performed on a team, it will instead return a list of all users belonging to that particular team."
+      )
+
+      _describe -t team-commands "team commands" list \
+      && return
+    ;;
+  esac
+
+  _alternative \
+    "global-commands:global:_yarn_global_commands" \
+    "common-workspace-commands:workspace:_yarn_common_workspace_commands" \
+    "package-scripts:scripts:_yarn_get_scripts_from_workspace_package_json"\;
+}
+
+_yarn_common_flags() {
+  local -a list
+
+  list=(
+    --cache-folder:"specify a custom folder that must be used to store the yarn cache: :_directorie"
+    --check-files:"install will verify file tree of packages for consistency"
+    --cwd:"working directory to use]: :_directorie"
+    --disable-pnp:"disable the Plug’n’Play installation"
+    --emoji:"enable emoji in output, by default: true"
+    --enable-pnp:"enable the Plug’n’Play installation"
+    --pnp:"enable the Plug’n’Play installation"
+    --flat:"only allow one version of a package"
+    --focus:"Focus on a single workspace by installing remote copies of its sibling workspaces."
+    --force:"install and build packages even if they were built before, overwrite lockfile"
+    --frozen-lockfile:"dont generate a lockfile and fail if an update is needed"
+    --global-folder:"specify a custom folder to store global packages"
+    --har:"save HAR output of network traffic"
+    --https-proxy
+    --ignore-engines:"ignore engines check"
+    --ignore-optional:"ignore optional dependencies"
+    --ignore-platform:"ignore platform checks"
+    --ignore-scripts:"dont run lifecycle scripts"
+    --json:"format Yarn log messages as lines of JSON"
+    --link-duplicates:"create hardlinks to the repeated modules in node_modules"
+    --link-folder:"specify a custom folder to store global links"
+    --modules-folder:"rather than installing modules into the node_modules folder relative to the cwd, output them here"
+    --mutex:"use a mutex to ensure only one yarn instance is executing"
+    --network-concurrency:"maximum number of concurrent network requests"
+    --network-timeout:"TCP timeout for network requests"
+    --no-bin-links:"dont generate bin links when setting up packages"
+    --no-default-rc:"prevent Yarn from automatically detecting yarnrc and npmrc files"
+    --no-lockfile:"dont read or generate a lockfile"
+    --non-interactive:"do not show interactive prompts"
+    --no-node-version-check:"do not warn when using a potentially unsupported Node version"
+    --no-progress:"disable progress bar"
+    --offline:"trigger an error if any required dependencies are not available in local cache"
+    --otp:"one-time password for two factor authentication"
+    --prefer-offline:"use network only if dependencies are not available in local cache"
+    --preferred-cache-folder:"specify a custom folder to store the yarn cache if possible"
+    --prod:"prod"
+    --production:"prod"
+    --proxy
+    --pure-lockfile:"don’t generate a lockfile"
+    --registry:"override configuration registry"
+    -s:"skip Yarn console logs, other types of logs will be printed"
+    --silent:"skip Yarn console logs, other types of logs will be printed"
+    --scripts-prepend-node-path:"prepend the node executable dir to the PATH in scripts"
+    --skip-integrity-check:"run install without checking if node_modules is installed"
+    --strict-semver
+    --update-checksums:"update package checksums from current repository"
+    --use-yarnrc:"specifies a yarnrc file that Yarn should use. not .npmrc"
+    -v:"output the version number"
+    --version:"output the version number"
+    --verbose:"output verbose messages on internal operations"
+    -h:"output usage information"
+    --help:"output usage information"
+  )
+
+  _describe -t common-flags "common flags" list
 }
 
 _yarn_global_commands() {
-  local -a cmds
-  cmds=('ls:List installed packages')
-  _describe 'command' _global_commands
+  local -a list
+
+  list=(
+    add:"Installs a package and any packages that it depends on."
+    bin:"Displays the location of the yarn bin folder."
+    list:"List installed packages."
+    remove:"Remove the package updayarn ting your package.json and yarn.lock files in the process."
+    upgrade:"Upgrades packages to their latest version based on the specified range."
+    upgrade-interactive:"Upgrades packages interactively."
+  )
+
+  _describe -t global-commands "global commands" list
 }
 
-_yarn_commands() {
-  _describe 'command' _commands -- _global_commands
+_yarn_global_strictly_commands() {
+  local -a list
+
+  list=(
+    dir:"Prints the output of the global installation folder."
+  )
+
+  _describe -t global-strictly-commands "global strictly commands" list
 }
 
-_yarn_add_files() {
-  if compset -P "(file|link):"; then
-    _files
-  fi
+_yarn_common_workspace_commands() {
+  local -a list
+
+  list=(
+    audit:"Perform a vulnerability audit against the installed packages."
+    autoclean:"Cleans and removes unnecessary files from package dependencies."
+    check:"Verifies that versions of the package dependencies in the current project’s package.json match those in yarn’s lock file."
+    generate-lock-entry:"Generates a lock file entry."
+    help:"Displays help information."
+    init:"Interactively creates or updates a package.json file."
+    install:"Install all dependencies for a project."
+    licenses:"List licenses for installed packages."
+    link:"Symlink a package folder during development."
+    outdated:"Checks for outdated package dependencies."
+    owner:"Manage package owners."
+    pack:"Creates a compressed gzip archive of package dependencies."
+    policies:"Defines project-wide policies for your project."
+    publish:"Publishes a package to the npm registry."
+    run:"Runs a defined package script."
+    tag:"Add, remove, or list tags on a package."
+    team:"Maintain team memberships."
+    unlink:"Unlink a previously created symlink for a package."
+    unplug:"Temporarily copies a package (with an optional @range suffix) outside of the global cache for debugging purposes."
+    version:"Updates the package version."
+    versions:"Displays version information of the currently installed Yarn, Node.js, and its dependencies."
+    why:"Show information about why a package is installed."
+  )
+
+  _describe -t common-workspace-commands "common workspace commands" list
 }
 
-_yarn_workspaces() {
-  local -a workspaces=(${(@f)$(yarn workspaces info |sed -n -e 's/^  "\([^"]*\)": {/\1/p')})
-  _describe 'workspace' workspaces
+_yarn_common_commands() {
+  local -a list
+
+  list=(
+    audit:"Perform a vulnerability audit against the installed packages."
+    autoclean:"Cleans and removes unnecessary files from package dependencies."
+    cache:"Yarn stores every package in a global cache in your user directory on the file system."
+    check:"Verifies that versions of the package dependencies in the current project’s package.json match those in yarn’s lock file."
+    config:"Manages the yarn configuration files."
+    create:"Creates new projects from any create-* starter kits."
+    generate-lock-entry:"Generates a lock file entry."
+    global:"Installs packages globally on your operating system."
+    help:"Displays help information."
+    import:"Generates yarn.lock from an npm package-lock.json file in the same location or an existing npm-installed node_modules folder."
+    info:"Show information about a package."
+    init:"Interactively creates or updates a package.json file."
+    install:"Install all dependencies for a project."
+    licenses:"List licenses for installed packages."
+    link:"Symlink a package folder during development."
+    login:"Store registry username and email."
+    logout:"Clear registry username and email."
+    outdated:"Checks for outdated package dependencies."
+    owner:"Manage package owners."
+    pack:"Creates a compressed gzip archive of package dependencies."
+    policies:"Defines project-wide policies for your project."
+    publish:"Publishes a package to the npm registry."
+    run:"Runs a defined package script."
+    tag:"Add, remove, or list tags on a package."
+    team:"Maintain team memberships."
+    unlink:"Unlink a previously created symlink for a package."
+    unplug:"Temporarily copies a package (with an optional @range suffix) outside of the global cache for debugging purposes."
+    version:"Updates the package version."
+    versions:"Displays version information of the currently installed Yarn, Node.js, and its dependencies."
+    why:"Show information about why a package is installed."
+    workspace:"This will run the chosen Yarn command in the selected workspace."
+    workspaces:"Show information about your workspaces."
+  )
+
+  _describe -t common-commands "common commands" list
 }
 
-_yarn() {
-  local context state state_descr line
-  typeset -A opt_args
+local curcontext="$curcontext" state state_descr line
+typeset -A opt_args val_args
+local -a orig_words
+local package_json="$(_yarn_recursively_look_for package.json)"
 
-  _arguments \
-    '(-h --help)'{-h,--help}'[output usage information]' \
-    '(-V --version)'{-V,--version}'[output the version number]' \
-    '--verbose[output verbose messages on internal operations]' \
-    '--cache-folder=[specify a custom folder to store the yarn cache]:folder:_files -/' \
-    '--check-files[install will verify file tree of packages for consistency]' \
-    '--cwd=[working directory to use]:path:_files -/' \
-    "(--enable-pnp --pnp)--disable-pnp[disable the Plug'n'Play installation]" \
-    '(--no-emoji)--emoji=[enable emoji in output(default: false)]:enabled:(true false)' \
-    '(--emoji)--no-emoji[disable emoji in output]' \
-    '(--disable-pnp)'{--enable-pnp,--pnp}"[enable the Plug'n'Play installation]" \
-    '--flat[only allow one version of a package]' \
-    '--focus[Focus on a single workspace by installing remote copies of its sibiling workspaces]' \
-    '--force[install and build packages even if they were built before, overwrite lockfile]' \
-    "--frozen-lockfile[don't generate a lockfile and fail if an update is needed]" \
-    '--global-folder=[modules folder]:folder:_files -/' \
-    '--har[save HAR output of network traffic]' \
-    '--https-proxy=[HTTPS proxy]:host:_hosts' \
-    '--ignore-engines[ignore engines check]' \
-    "--ignore-scripts[don't run lifecycle scripts]" \
-    '--ignore-optional[ignore optional dependencies]' \
-    '--ignore-platform[ignore platform checks]' \
-    '--json[format Yarn log messages as lines of JSON]' \
-    '--link-duplicates[create hardlinks to the repeated modules in node_modules]' \
-    '--link-folder=[specify a custom folder to store global links]' \
-    '--modules-folder=[rather than installing modules into the node_modules folder relative to the cwd, output them here]:folder:_files -/' \
-    '--mutex=[use a mutex to ensure only one yarn instance is executing]:type[\:specifier]' \
-    '--network-concurrency=[maximum number of concurrent network requests]:number' \
-    '--network-timeout=[TCP timeout for network requests]:milliseconds' \
-    "--no-bin-links[don't generate bin links when setting up packages]" \
-    '--no-default-rc[prevent Yarn from automatically detecting yarnrc and npmrc files]' \
-    "--no-lockfile[don't read or generate a lockfile]" \
-    '--non-interactive[do not show interactive prompts]' \
-    '--no-node-version-check[do not warn when using a potentially unsupported Node version]' \
-    '--no-progress[disable progress bar]' \
-    '--offline[trigger an error if any required dependencies are not available in local cache]' \
-    '--otp=[one-time password for two factor authentication]:otpcode' \
-    '--prefer-offline[use network only if dependencies are not available in local cache]' \
-    '--preferred-cache-folder=[specify a custom folder to store the yarn cache if possible]:folder:_files -/' \
-    '(--prod --production)'{--prod,--production}'[install only production dependencies]' \
-    '--proxy=[HTTP proxy]:host:_hosts' \
-    "--pure-lockfile[don't generate a lockfile]" \
-    '--registry=[override configuration registry]:url:_urls' \
-    '(-s --silent)'{-s,--silent}'[skip Yarn console logs, other types of logs (script output) will be printed]' \
-    '--scripts-prepend-node-path=[prepend the node executable dir to the PATH in scripts]:bool:(true false)' \
-    '--skip-integrity-check[run install without checking if node_modules is installed]' \
-    "--strict-semver[don't compare semver loosely]" \
-    '--update-checksum[update package checksums from current repository]' \
-    '--use-yarnrc=[specifies a yarnrc that Yarn should use]:yarnrc:_files' \
-    '1: :_yarn_commands_scripts' \
-    '*:: :->command_args'
+orig_words=( ${words[@]} )
 
+_arguments -C \
+  "--cache-folder[specify a custom folder that must be used to store the yarn cache]: :_directories" \
+  "--check-files[install will verify file tree of packages for consistency]" \
+  "--cwd[working directory to use]: :_directories" \
+  "--disable-pnp[disable the Plug’n’Play installation]" \
+  "--emoji[enable emoji in output, by default: true]" \
+  "--enable-pnp --pnp[enable the Plug’n’Play installation]" \
+  "--flat[only allow one version of a package]" \
+  "--focus[Focus on a single workspace by installing remote copies of its sibling workspaces.]" \
+  "--force[install and build packages even if they were built before, overwrite lockfile]" \
+  "--frozen-lockfile[don’t generate a lockfile and fail if an update is needed]" \
+  "--global-folder[specify a custom folder to store global packages]" \
+  "--har[save HAR output of network traffic]" \
+  "--https-proxy" \
+  "--ignore-engines[ignore engines check]" \
+  "--ignore-optional[ignore optional dependencies]" \
+  "--ignore-platform[ignore platform checks]" \
+  "--ignore-scripts[don’t run lifecycle scripts]" \
+  "--json[format Yarn log messages as lines of JSON]" \
+  "--link-duplicates[create hardlinks to the repeated modules in node_modules]" \
+  "--link-folder[specify a custom folder to store global links]: :_directories" \
+  "--modules-folder[rather than installing modules into the node_modules folder relative to the cwd, output them here]: :_directories" \
+  "--mutex[use a mutex to ensure only one yarn instance is executing]" \
+  "--network-concurrency[maximum number of concurrent network requests]" \
+  "--network-timeout[TCP timeout for network requests]" \
+  "--no-bin-links[don’t generate bin links when setting up packages]" \
+  "--no-default-rc[prevent Yarn from automatically detecting yarnrc and npmrc files]" \
+  "--no-lockfile[don’t read or generate a lockfile]" \
+  "--non-interactive[do not show interactive prompts]" \
+  "--no-node-version-check[do not warn when using a potentially unsupported Node version]" \
+  "--no-progress[disable progress bar]" \
+  "--offline[trigger an error if any required dependencies are not available in local cache]" \
+  "--otp[one-time password for two factor authentication]" \
+  "--prefer-offline[use network only if dependencies are not available in local cache]" \
+  "--preferred-cache-folder[specify a custom folder to store the yarn cache if possible]: :_directories" \
+  "--prod --production[prod]" \
+  "--proxy" \
+  "--pure-lockfile[don’t generate a lockfile]" \
+  "--registry[override configuration registry]" \
+  "-s --silent[skip Yarn console logs, other types of logs will be printed]" \
+  "--scripts-prepend-node-path[prepend the node executable dir to the PATH in scripts]" \
+  "--skip-integrity-check[run install without checking if node_modules is installed]" \
+  "--strict-semver" \
+  "--update-checksums[update package checksums from current repository]" \
+  "--use-yarnrc[specifies a yarnrc file that Yarn should use. not .npmrc]" \
+  "-v --version[output the version number]" \
+  "--verbose[output verbose messages on internal operations]" \
+  "-h --help[output usage information]" \
+  "(-): :->command" \
+  "(-)*:: :->arg"
 
-  case $state in
-    command_args)
-      case $words[1] in
-        help)
-          _arguments \
-            '1: :_yarn_commands' \
-        ;;
+case $state in
+  command)
+    _alternative \
+      "global-commands:global:_yarn_global_commands" \
+      "common-commands:common:_yarn_common_commands" \
+      "package-scripts:scripts:_yarn_get_scripts_from_package_json" \
+  ;;
+  arg)
+    if [[ "${words[-1]:0:1}" == "-" ]]; then # options should complete as option is typed
+      _yarn_common_flags \
+      && return
+    fi
 
-        access)
-          _arguments \
-            '1: :(public restricted grant revoke ls-packages ls-collaborators edit)'
-        ;;
+    case $words[1] in
+      add)
+        _values $(_yarn_get_cached_packages) \
+      ;;
+      remove)
+        _yarn_get_packages_from_package_json \
+        && return
+      ;;
+      upgrade | upgrade-interactive)
+        _yarn_get_packages_from_package_json \
+        && return
+      ;;
+      run)
+        [[ $CURRENT == 3 ]] && return
+        _yarn_get_scripts_from_package_json
+      ;;
+      global)
+        [[ $CURRENT > 2 ]] \
+        && _yarn_completion_global_commands \
+        && return
 
-        add)
-          _arguments \
-            '(-D --dev)'{-D,--dev}'[install packages in devDependencies]' \
-            '(-P --peer)'{-P,--peer}'[install packages in peerDependencies]' \
-            '(-O --optional)'{-O,--optional}'[install packages in optionalDependencies]' \
-            '(-E --exact)'{-E,--exact}'[install packages as exact versions]' \
-            '(-T --tilde)'{-T,--tilde}'[install the most recent release of the packages that have the same minor version]' \
-            '(--ignore-workspace-root-check -W)'{--ignore-workspace-root-check,-W}'[allows a package to be installed at the workspaces root]' \
-            '--audit[checks for known security issues with the installed packages]' \
-            '*:package-name:_yarn_add_files'
-        ;;
+        _alternative \
+          "global-strictly-commands:strictly:_yarn_global_strictly_commands" \
+          "global-commands:global:_yarn_global_commands" \
+      ;;
+      workspaces)
+        [[ $CURRENT == 3 ]] && return
+        local -a list
 
-        audit)
-          _arguments \
-            '--verbose[output verbose message]' \
-            '--json[format Yarn log messages as lines of JSON]' \
-            '--level=[only print advisories with severity greater than or equal to]:level:(info low moderate high critical)' \
-            '--groups=[only audit dependencies from listed groups]:groups:->groups_args'
-        ;;
+        list=(
+          info:"Display the workspace dependency tree of your current project."
+          run:"Run the chosen Yarn command in each workspace."
+        )
 
-        cache)
-          _arguments \
-            '1: :(list dir clean)' \
-            '*:: :->cache_args'
-        ;;
+        _describe -t workspaces-commands "workspaces commands" list
+      ;;
+      workspace)
+        [[ $CURRENT -gt 2 ]] && \
+        _yarn_workspace_commands $words[2] && \
+        return
 
-        check)
-          _arguments \
-            '--integrity[Verifies that versions and hashed values of the package contents in package.json]' \
-            '--verify-tree[Recursively verifies that the dependencies in package.json are present in node_modules]'
-        ;;
+        _yarn_get_workspaces
+      ;;
+      cache)
+        [[ $CURRENT == 3 ]] && return
+        local -a list
 
-        config)
-          _arguments \
-            '1: :(set get delete list)' \
-            '*:: :->config_args'
-        ;;
+        list=(
+          list:"Prints out every cached package"
+          dir:"Prints out the path where yarn’s global cache is currently stored."
+          clean:"Command will clear the global cache."
+        )
 
-        global)
-          _arguments \
-            '--prefix=[bin prefix to use to install binaries]' \
-            '1: :_yarn_global_commands' \
-            '*:: :->command_args'
-        ;;
+        _describe -t cache-commands "cache commands" list
+      ;;
+      config)
+        [[ $CURRENT == 3 ]] && return
+        local -a list
 
-        info)
-          _arguments \
-            '1:package:' \
-            '2:field'
-        ;;
+        list=(
+          set:"Sets the config key to a certain value."
+          get:"Echoes the value for a given key to stdout."
+          delete:"Deletes a given key from the config."
+          list:"Displays the current configuration."
+        )
 
-        init)
-          _arguments \
-            '(-y --yes)'{-y,--yes}'[install packages in devDependencies]'
-        ;;
+        _describe -t config-commands "config commands" list
+      ;;
+      help)
+        [[ $CURRENT == 3 ]] && return
 
-        licenses)
-          _arguments \
-            '1: :(ls generate-disclaimer)' \
-        ;;
+        _alternative \
+          "global-commands:global:_yarn_global_commands" \
+          "common-commands:common:_yarn_common_commands" \
+      ;;
+      info)
+        [[ $CURRENT == 3 ]] && return
+        _values $(_yarn_get_cached_packages)
+      ;;
+      licenses)
+        [[ $CURRENT == 3 ]] && return
+        local -a list
 
-        link|unlink|outdated)
-          _arguments \
-            '1:package' \
-        ;;
+        list=(
+          list:"List licenses for installed packages."
+          generate-disclaimer:"Running this command will return a sorted list of licenses from all the packages you have installed to the stdout."
+        )
 
-        list)
-          _arguments \
-            '--depth=[Limit the depth of the shown dependencies]:depth' \
-            '--pattern=[filter the list of dependencies by the pattern]'
-        ;;
+        _describe -t licenses-commands "licenses commands" list
+      ;;
+      owner)
+        [[ $CURRENT == 3 ]] && return
+        local -a list
 
-        owner)
-          _arguments \
-            '1: :(list add rm)' \
-            '*:: :->owner_args'
-        ;;
+        list=(
+          list:"Lists all of the owners of a <package>."
+          add:"Adds the <user> as an owner of the <package>. You must already be an owner of the <package> in order to run this command."
+          remove:"Removes the <user> as an owner of the <package>. You must already be an owner of the <package> in order to run this command."
+        )
 
-        pack)
-          _arguments \
-            '(-f --filename)'{-f,--filename}':filename:_files'
-        ;;
+        _describe -t owner-commands "owner commands" list
+      ;;
+      policies)
+        [[ $CURRENT == 3 ]] && return
+        local -a list
 
-        publish)
-          _arguments \
-            '--new-version:version:' \
-            '--message:message:' \
-            '--no-git-tag-version' \
-            '--access:access:' \
-            '--tag:tag:' \
-            '1: :_files'
-        ;;
+        list=(
+          set-version:"Defines project-wide policies for your project."
+        )
 
-        policies)
-          _arguments \
-            '1: :(set-version)'
-        ;;
+        _describe -t policies-commands "policies commands" list
+      ;;
+      tab)
+        [[ $CURRENT == 3 ]] && return
+        local -a list
 
-        remove|upgrade)
-          _arguments \
-            '*:package:'
-        ;;
+        list=(
+          add:"Add a tag named <tag> for a specific <version> of a <package>."
+          remove:"Remove a tag named <tag> from a <package> that is no longer in use."
+          list:"List all of the tags for a <package>. If unspecified <package> will default to the package you’re currently inside the directory of."
+        )
 
-        run)
-          if [[ -n $opt_args[--cwd] ]]; then
-            _yarn_run_cwd=$opt_args[--cwd]
-          else
-            _yarn_run_cwd=''
-          fi
-          _arguments \
-            '1: :_yarn_scripts' \
-            '*:: :_default'
-        ;;
+        _describe -t tab-commands "tag commands" list
+      ;;
+      team)
+        [[ $CURRENT == 3 ]] && return
+        local -a list
 
-        tag)
-          _arguments \
-            '1: :(lists add rm)' \
-            '*:: :->tag_args'
-        ;;
+        list=(
+          create:"Create a new team."
+          destroy:"Destroys an existing team."
+          add:"Add a user to an existing team."
+          remove:"Remove a user from a team they belong to."
+          list:"If performed on an organization name, will return a list of existing teams under that organization. If performed on a team, it will instead return a list of all users belonging to that particular team."
+        )
 
-        team)
-          _arguments \
-            '1: :(create destroy add rm list)' \
-            '*:: :->team_args'
-        ;;
-
-        upgrade-interactive)
-          _arguments \
-            '--latest[use the version tagged latest in the registry]'
-        ;;
-
-        version)
-          _arguments \
-            '--new-version[create a new version using an interactive session to prompt you]:version:' \
-            '--major[creates a new version by incrementing the major version]' \
-            '--minor[creates a new version by incrementing the minor version]' \
-            '--patch[creates a new version by incrementing the patch version]' \
-            '--premajor[creates a new prerelease version by incrementing the major version]' \
-            '--preminor[creates a new prerelease version by incrementing the minor version]' \
-            '--prepatch[creates a new prerelease version by incrementing the patch version]' \
-            '--prerelease[increments the prerelease version number keeping the main version]' \
-            '--no-git-tag-version[creates a new version without creating a git tag]' \
-            '--no-commit-hooks[bypasses running commit hooks when committing the new version]'
-        ;;
-
-        why)
-          _arguments \
-            '1:query:_files'
-        ;;
-
-        workspace)
-          _arguments \
-            '1:workspace:_yarn_workspaces' \
-            '*:: :_yarn_global_commands'
-        ;;
-
-        workspaces)
-          _arguments \
-            '--json[format Yarn log messages as lines of JSON]' \
-            '1:commands:(info run)'
-        ;;
-
-        *)
-          _default
-        ;;
-      esac
-    ;;
-  esac
-
-  case $state in
-    cache_args)
-      if [[ $words[1] == "list" ]]; then
-        _arguments \
-          '--pattern=[print out every cached package that matches the pattern]:pattern:'
-      fi
-    ;;
-    config_args)
-      case $words[1] in
-        get|delete)
-          _arguments \
-            '1:key:'
-        ;;
-
-        set)
-          _arguments \
-            '(-g --global)'{-g,--global} \
-            '1:key:' \
-            '2:value:'
-        ;;
-      esac
-    ;;
-    groups_args)
-      local dependency_groups=(devDependencies dependencies optionalDependencies peerDependencies bundledDependencies)
-      _values -s ',' 'groups' $dependency_groups
-    ;;
-
-    owner_args)
-      case $words[1] in
-        ls)
-          _arguments \
-            '1:package:'
-        ;;
-
-        add|rm)
-          _arguments \
-            '1:user:' \
-            '2:package:'
-        ;;
-      esac
-    ;;
-
-    tag_args)
-      case $words[1] in
-        ls)
-          _arguments \
-            '1:package'
-        ;;
-
-        add|rm)
-          _arguments \
-            '1:package:' \
-            '2:tag:'
-        ;;
-      esac
-    ;;
-
-    team_args)
-      case $words[1] in
-        create|destroy|ls)
-          _arguments \
-            '1:scope\:team:'
-        ;;
-
-        add|rm)
-          _arguments \
-            '1:scope\:team:' \
-            '2:user:'
-        ;;
-      esac
-    ;;
-  esac
-}
-
-_yarn "$@"
-
-# Local Variables:
-# mode: Shell-Script
-# sh-indentation: 2
-# indent-tabs-mode: nil
-# sh-basic-offset: 2
-# End:
-# vim: ft=zsh sw=2 ts=2 et
+        _describe -t team-commands "team commands" list
+      ;;
+    esac
+  ;;
+esac
