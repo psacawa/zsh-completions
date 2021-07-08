@@ -1,0 +1,58 @@
+#compdef fzf
+
+local -a options=(
+ --algo
+ --ansi
+ --bind
+ --border
+ --color
+ --cycle
+ --delimiter
+ --disabled
+ --exact
+ --exit-0
+ --expect
+ --extended
+ --filepath-word
+ --filter
+ --header
+ --header-lines
+ --height
+ --history
+ --history-size
+ --hscroll-off
+--info
+--inline-info
+--jump-labels
+--keep-right
+--layout
+--literal
+--margin
+--marker
+--min-height
+--multi
+--no-bold
+--no-extended
+--no-hscroll
+--no-mouse
+--no-sort
+--nth
+--padding
+--pointer
+--preview
+--preview-window
+--print0
+--print-query
+--prompt
+--query
+--read0
+--select-1
+--sync
+--tabstop
+--tac
+--tiebreak
+--version
+--with-nth
+)
+
+_describe fzf options
