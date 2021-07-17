@@ -1,4 +1,4 @@
-#compdef psql pg_dump pg_dumpall pg_restore createdb dropdb vacuumdb createuser dropuser initdb
+#compdef psql pg_dump pg_dumpall pg_restore createdb dropdb vacuumdb createuser dropuser initdb pgcli
 # ------------------------------------------------------------------------------
 # Copyright (c) 2016 Github zsh-users - http://github.com/zsh-users, Dominic Mitchell, Johann 'Myrkraverk' Oskarsson, Daniel Serodio, J Smith
 # All rights reserved.
@@ -498,6 +498,7 @@ _pgsql_utils () {
     )
 
     case "$service" in
+        pgcli)     _psql "$@"     ;;
         psql)     _psql "$@"     ;;
         pg_dump)  _pg_dump "$@"  ;;
         pg_restore)  _pg_restore "$@" ;;
