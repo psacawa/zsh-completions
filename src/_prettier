@@ -1,0 +1,49 @@
+#compdef prettier
+
+local -a options
+options=(
+  --arrow-parens
+  --check
+  --config
+  --config-precedence
+  --cursor-offset
+  --embedded-language-formatting
+  --end-of-line
+  --file-info
+  --find-config-path
+  --help
+  --html-whitespace-sensitivity
+  --ignore-path
+  --ignore-unknown
+  --insert-pragma
+  --jsx-bracket-same-line
+  --jsx-single-quote
+  --list-different
+  --loglevel
+  --no-bracket-spacing
+  --no-color
+  --no-config
+  --no-editorconfig
+  --no-semi
+  --parser
+  --plugin
+  --plugin-search-dir
+  --print-width
+  --prose-wrap
+  --quote-props
+  --range-end
+  --range-start
+  --require-pragma
+  --single-quote
+  --stdin-filepath
+  --support-info
+  --tab-width
+  --trailing-comma
+  --use-tabs
+  --version
+  --vue-indent-script-and-style
+  --with-node-modules
+  --write
+)
+
+_describe prettier options
