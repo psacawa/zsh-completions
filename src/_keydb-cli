@@ -51,3 +51,22 @@ options=(
 )
 
 _arguments -s $options
+
+# (on==1) {
+#  if ($1 ~ /^--?\w+/ ) {
+#   printf "\'%s[%s]%s\'\n", flag, desc, arg;
+#   seen [flag]="1"
+   
+#    flag=$1;
+#    arg="";
+#    start= match($0,  /[A-Z]/)
+#    desc=substr($0, start)
+#  } else {
+#    start=match($0, /\S/)
+#    desc= desc " " substr($0, start)
+#  }
+ 
+
+# }
+# /^Usage/{on=1}
+# /^Cluster Manager/{on=0}
