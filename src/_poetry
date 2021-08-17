@@ -1,20 +1,23 @@
 #compdef poetry
 
-_poetry_4b389ba9e20e9277_complete()
+_poetry_19fc3067e08bc7e1_complete ()
 {
     local state com cur
+    local -a coms
 
     cur=${words[${#words[@]}]}
 
     # lookup for command
     for word in ${words[@]:1}; do
+        # if [[ $word != -* ]]; then
         if [[ $word != -* ]]; then
             com=$word
             break
         fi
     done
 
-    if [[ ${cur} == --* ]]; then
+
+    if [[ ${cur} == -* ]]; then
         state="option"
         opts=("--ansi:Force ANSI output" "--help:Display this help message" "--no-ansi:Disable ANSI output" "--no-interaction:Do not ask any interactive question" "--quiet:Do not output any message" "--verbose:Increase the verbosity of messages: \\\"-v\\\" for normal output, \\\"-vv\\\" for more verbose output and \\\"-vvv\\\" for debug" "--version:Display this application version")
     elif [[ $cur == $com ]]; then
@@ -131,5 +134,5 @@ _poetry_4b389ba9e20e9277_complete()
     esac
 }
 
-_poetry_4b389ba9e20e9277_complete "$@"
-compdef _poetry_4b389ba9e20e9277_complete /home/psacawa/.pyenv/versions/3.9.0/bin/poetry
+_poetry_19fc3067e08bc7e1_complete "$@"
+compdef _poetry_19fc3067e08bc7e1_complete /home/psacawa/.pyenv/versions/3.9.0/envs/lektprojekt/bin/poetry
