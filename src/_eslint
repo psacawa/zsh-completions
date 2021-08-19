@@ -1,0 +1,40 @@
+#compdef eslint
+
+_arguments -s \
+  --eslintrc"[Disable use of configuration from .eslintrc.*]" \
+  "(--config -c)"{--config,-c}"[Use this configuration, overriding .eslintrc.* config options if present]"  \
+  --env"[Specify environments]"  \
+  --ext"[Specify JavaScript file extensions]"  \
+  --global"[Define global variables]"  \
+  --parser"[Specify the parser to be used]"  \
+  --parser-options"[Specify parser options]"  \
+  --resolve-plugins-relative-to"[A folder where plugins should be resolved from, CWD by default]"  \
+  --rulesdir"[Use additional rules from this directory]"  \
+  --plugin"[Specify plugins]"  \
+  --rule"[Specify rules]"  \
+  --fix"[Automatically fix problems]"  \
+  --fix-dry-run"[Automatically fix problems without saving the changes to the file system]"  \
+  --fix-type"[Specify the types of fixes to apply (problem, suggestion, layout)]"  \
+  --ignore-path"[Specify path of ignore file]"  \
+  --ignore"[Disable use of ignore files and patterns]"  \
+  --ignore-pattern"[Pattern of files to ignore (in addition to those in .eslintignore)]"  \
+  --stdin"[Lint code provided on <STDIN>]"  \
+  --stdin-filename"[Specify filename to process STDIN as]"  \
+  --quiet"[Report errors only]"  \
+  --max-warnings"[Number of warnings to trigger nonzero exit code]"  \
+  "(--output-file -o)"{--output-file,-o}"[Specify file to write report to]"  \
+  "(--format -f)"{--format,-f}"[Use a specific output format]"  \
+  "(--color,-no-color)"{--color,-no-color}"[Force enabling/disabling of color]"  \
+  --inline-config"[Prevent comments from changing config or rules]"  \
+  --report-unused-disable-directives"[Adds reported errors for unused eslint-disable directives]"  \
+  --cache"[Only check changed files]"  \
+  --cache-file"[Path to the cache file. Deprecated: use --cache-location]"  \
+  --cache-location"[Path to the cache file or directory]"  \
+  --init"[Run config initialization wizard]"  \
+  --env-info"[Output execution environment information]"  \
+  --error-on-unmatched-pattern"[Prevent errors when pattern is unmatched]"  \
+  --debug"[Output debugging information]"  \
+  "(--help -h)"{--help,-h}"[Show help]"  \
+  "(--version -v)"{--version,-v}"[Output the version number]"  \
+  --print-config"[Print the configuration for the given file]:::_files" \
+  :::_files
