@@ -1,0 +1,3 @@
+#compdef _pstree
+
+_gnu_generic

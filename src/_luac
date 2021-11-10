@@ -1,0 +1,3 @@
+#compdef luac lua
+
+_gnu_generic

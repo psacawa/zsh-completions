@@ -1,0 +1,4 @@
+#compdef mitmproxy 
+
+# _describe mypy options
+_gnu_generic

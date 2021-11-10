@@ -1,0 +1,3 @@
+#compdef rustfmt
+
+_gnu_generic

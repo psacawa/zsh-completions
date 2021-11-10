@@ -1,0 +1,2 @@
+#compdef llvm-mc-10
+_gnu_generic

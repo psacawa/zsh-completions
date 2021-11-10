@@ -1,0 +1,2 @@
+#compdef llvm-elfabi-10
+_gnu_generic
