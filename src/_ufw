@@ -75,7 +75,7 @@ _ufw_delete() {
     fi
 
     complrules=()
-    rules=("${(f)$(ufw status | tr -s ' ' | tail -n +5 | tr -s '\n')}")
+    rules=("${(f)$(sudo ufw status | tr -s ' ' | tail -n +5 | tr -s '\n')}")
 
     for ((i=1; i<=${#rules[@]}; i++)); do
         complrules+=("$i:$rules[i]");
