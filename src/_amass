@@ -1,0 +1,194 @@
+#compdef amass
+
+_amass_commands_ () {
+  local commands=(
+    'intel:Discover targets for enumerations' 
+    'enum:Perform enumerations and network mapping' 
+    'viz:Visualize enumeration results' 
+    'track:Track differences between enumerations' 
+    'db:Manipulate the Amass graph database' 
+    'dns:Resolve DNS names at high performance'
+  )
+  _describe "amass commands" commands
+}
+
+_amass_intel=(
+  "-active[Attempt certificate name grabs]"
+  "-addr[IPs and ranges (192.168.1.1-254) separated by commas]"
+  "-asn[ASNs separated by commas (can be used multiple times)]"
+  "-cidr[CIDRs separated by commas (can be used multiple times)]"
+  "-config[Path to the INI configuration file. Additional details below]"
+  "-d[Domain names separated by commas (can be used multiple times)]"
+  "-demo[Censor output to make it suitable for demonstrations]"
+  "-df[Path to a file providing root domain names]"
+  "-dir[Path to the directory containing the output files]"
+  "-ef[Path to a file providing data sources to exclude]"
+  "-exclude [Data source names separated by commas to be excluded]"
+  "-if[Path to a file providing data sources to include]"
+  "-include[Data source names separated by commas to be included]"
+  "-ip[Show the IP addresses for discovered names]"
+  "-ipv4[Show the IPv4 addresses for discovered names]"
+  "-ipv6[Show the IPv6 addresses for discovered names]"
+  "-list[Print additional information]"
+  "-log[Path to the log file where errors will be written]"
+  "-max-dns-queries[Maximum number of concurrent DNS queries]"
+  "-o[Path to the text file containing terminal stdout/stderr]"
+  "-org[Search string provided against AS description information]"
+  "-p[Ports separated by commas (default: 80, 443)]"
+  "-r[IP addresses of preferred DNS resolvers (can be used multiple times)]"
+  "-rf[Path to a file providing preferred DNS resolvers]"
+  "-src[Print data sources for the discovered names]"
+  "-timeout[Number of minutes to let enumeration run before quitting]"
+  "-v[Output status / debug / troubleshooting info]"
+  "-whois[All provided domains are run through reverse whois]"
+  "(- :)"{-h,-help}"[Show the program usage message]"
+)
+
+_amass_enum=(
+  "-active[Attempt zone transfers and certificate name grabs]"
+  "-addr[IPs and ranges (192.168.1.1-254) separated by commas]"
+  "-asn[ASNs separated by commas (can be used multiple times)]"
+  "-aw[Path to a different wordlist file for alterations]"
+  "-awm[\"hashcat-style\" wordlist masks for name alterations]"
+  "-bl[Blacklist of subdomain names that will not be investigated]"
+  "-blf[Path to a file providing blacklisted subdomains]"
+  "-brute[Execute brute forcing after searches]"
+  "-cidr[CIDRs separated by commas (can be used multiple times)]"
+  "-config[Path to the INI configuration file. Additional details below]"
+  "-d[Domain names separated by commas (can be used multiple times)]"
+  "-demo[Censor output to make it suitable for demonstrations]"
+  "-df[Path to a file providing root domain names]"
+  "-dir[Path to the directory containing the output files]"
+  "-ef[Path to a file providing data sources to exclude]"
+  "-exclude[Data source names separated by commas to be excluded]"
+  "-if[Path to a file providing data sources to include]"
+  "-iface[Provide the network interface to send traffic through]"
+  "-include[Data source names separated by commas to be included]"
+  "-ip[Show the IP addresses for discovered names]"
+  "-ipv4[Show the IPv4 addresses for discovered names]"
+  "-ipv6[Show the IPv6 addresses for discovered names]"
+  "-json[Path to the JSON output file]"
+  "-list[Print the names of all available data sources]"
+  "-log[Path to the log file where errors will be written]"
+  "-max-depth[Maximum number of subdomain labels for brute forcing]"
+  "-max-dns-queries[Maximum number of DNS queries per second]"
+  "-min-for-recursive[Subdomain labels seen before recursive brute forcing (Default: 1) (default 1)]"
+  "-nf[Path to a file providing already known subdomain names (from other tools/sources)]"
+  "-noalts[Disable generation of altered names]"
+  "-nocolor[Disable colorized output]"
+  "-nolocaldb[Disable saving data into a local database]"
+  "-norecursive[Turn off recursive brute forcing]"
+  "-o[Path to the text file containing terminal stdout/stderr]"
+  "-oA[Path prefix used for naming all output files]"
+  "-p[Ports separated by commas (default: 80, 443)]"
+  "-passive[Disable DNS resolution of names and dependent features]"
+  "-r[IP addresses of preferred DNS resolvers (can be used multiple times)]"
+  "-rf[Path to a file providing preferred DNS resolvers]"
+  "-scripts[Path to a directory containing ADS scripts]"
+  "-share[Share findings with data source providers]"
+  "-silent[Disable all output during execution]"
+  "-src[Print data sources for the discovered names]"
+  "-timeout[Number of minutes to let enumeration run before quitting]"
+  "-v[Output status / debug / troubleshooting info]"
+  "-w[Path to a different wordlist file for brute forcing]"
+  "-wm[\"hashcat-style\" wordlist masks for DNS brute forcing]"
+  "(- :)"{-h,-help}"[Show the program usage message]"
+)
+
+_amass_viz=(
+  "-config[Path to the INI configuration file. Additional details below]"
+  "-d[Domain names separated by commas (can be used multiple times)]"
+  "-d3[Generate the D3 v4 force simulation HTML file]"
+  "-df[Path to a file providing root domain names]"
+  "-dir[Path to the directory containing the graph database]"
+  "-dot[Generate the DOT output file]"
+  "-enum[Identify an enumeration via an index from the listing]"
+  "-gexf[Generate the Gephi Graph Exchange XML Format (GEXF) file]"
+  "-graphistry[Generate the Graphistry JSON file]"
+  "-i[The Amass data operations JSON file]"
+  "-maltego[Generate the Maltego csv file]"
+  "-nocolor[Disable colorized output]"
+  "-ostring [Path to the directory for output files being generated]"
+  "-silent[Disable all output during execution]"
+  "(- :)"{-h,-help}"[Show the program usage message]"
+)
+
+_amass_track=(
+  "-config[Path to the INI configuration file. Additional details below]"
+  "-d[Domain names separated by commas (can be used multiple times)]"
+  "-df[Path to a file providing root domain names]"
+  "-dir[Path to the directory containing the graph database]"
+  "-history[Show the difference between all enumeration pairs]"
+  "-last[The number of recent enumerations to include in the tracking]"
+  "-nocolor[Disable colorized output]"
+  "-silent[Disable all output during execution]"
+  "-since[Exclude all enumerations before (format: 01/02 15:04:05 2006 MST)]"
+  "(- :)"{-h,-help}"[Show the program usage message]"
+)
+
+_amass_db=(
+  "-config[Path to the INI configuration file. Additional details below]"
+  "-d[Domain names separated by commas (can be used multiple times)]"
+  "-demo[Censor output to make it suitable for demonstrations]"
+  "-df[Path to a file providing root domain names]"
+  "-dir[Path to the directory containing the graph database]"
+  "-enum[Identify an enumeration via an index from the listing]"
+  "-ip[Show the IP addresses for discovered names]"
+  "-ipv4[Show the IPv4 addresses for discovered names]"
+  "-ipv6[Show the IPv6 addresses for discovered names]"
+  "-json[Path to the JSON output file]"
+  "-list[Numbered list of enums filtered on provided domains]"
+  "-names[Print Just Discovered Names]"
+  "-nocolor[Disable colorized output]"
+  "-o[Path to the text file containing terminal stdout/stderr]"
+  "-show[Print the results for the enumeration index + domains provided]"
+  "-silent[Disable all output during execution]"
+  "-src[Print data sources for the discovered names]"
+  "-summary[Print Just ASN Table Summary]"
+  "(- :)"{-h,-help}"[Show the program usage message]"
+)
+
+_amass_dns=(
+  "-bl[Blacklist of subdomain names that will not be investigated]"
+  "-blf[Path to a file providing blacklisted subdomains]"
+  "-config[Path to the INI configuration file. Additional details below]"
+  "-d[Domain names separated by commas (can be used multiple times)]"
+  "-demo[Censor output to make it suitable for demonstrations]"
+  "-df[Path to a file providing root domain names]"
+  "-dir[Path to the directory containing the output files]"
+  "-ip[Show the IP addresses for discovered names]"
+  "-ipv4[Show the IPv4 addresses for discovered names]"
+  "-ipv6[Show the IPv6 addresses for discovered names]"
+  "-json[Path to the JSON output file]"
+  "-log[Path to the log file where errors will be written]"
+  "-max-dns-queries[Maximum number of concurrent DNS queries]"
+  "-nf[Path to a file providing already known subdomain names (from other tools/sources)]"
+  "-o[Path to the text file containing terminal stdout/stderr]"
+  "-oA[Path prefix used for naming all output files]"
+  "-r[IP addresses of preferred DNS resolvers (can be used multiple times)]"
+  "-rf[Path to a file providing preferred DNS resolvers]"
+  "-t[DNS record types to be queried for (can be used multiple times)]"
+  "-timeout[Number of minutes to let enumeration run before quitting]"
+  "-v[Output status / debug / troubleshooting info]"
+  "(- :)"{-h,-help}"[Show the program usage message]"
+
+)
+
+_amass_commmon_options=(
+  "(- :)"{-h,-help}"[Show the program usage message]"
+)
+
+_arguments \
+  $_amass_commmon_options \
+  \
+  ': :_amass_commands_' \
+  '*::args:->args'
+
+case $words[1] in
+  intel) _arguments $_amass_intel ;;
+  enum) _arguments $_amass_enum ;;
+  viz) _arguments $_amass_viz ;;
+  track) _arguments $_amass_track ;;
+  db) _arguments $_amass_db ;;
+  dns) _arguments $_amass_dns ;;
+esac
