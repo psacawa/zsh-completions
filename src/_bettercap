@@ -1,0 +1,21 @@
+#compdef bettercap
+
+local -a options=(
+  -autostart
+  -caplet
+  -caplets-path
+  -cpu-profile
+  -debug
+  -env-file
+  -eval
+  -gateway-override
+  "-iface: :_net_interfaces"
+  -mem-profile
+  -no-colors
+  -no-history
+  -script
+  -silent
+  -version
+)
+
+_arguments $options
