@@ -1,0 +1,12 @@
+#compdef apt-rdepends
+
+local -a _dep_types=(Depends PreDepends Suggests Recommends Conflicts Replaces Obsoletes)
+local -a _states=(Unknown NotInstalled UnPacked HalfConfigured HalfInstalled ConfigFiles Installed)
+
+_arguments \
+  '1: :_deb_packages installed' \
+  '*:arg: _default' -- \
+  {-f,--follow}":follow:($_dep_types)" \
+  {-s,--show}":show:($_dep_types)" \
+  "--state-follow:state-follow:($_states)" \
+  "--state-show:state-show:($_states)"
