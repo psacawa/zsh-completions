@@ -1,2 +1,3 @@
 #compdef systool
-_gnu_generic
+
+_arguments '-m[wybrany moduł]:module:($(cut -f1 -d\  </proc/modules))' '*:arg: _default' --
