@@ -1,0 +1,19 @@
+#compdef tree-sitter
+
+if [[ $CURRENT == 2 ]]; then
+  local -a subcommands=(
+    'init-config:Generate a default config file'
+    'generate:Generate a parser' 
+    'parse:Parse files' 
+    'query:Search files using a syntax tree query' 
+    'tags:Generate a list of tags' 
+    "test:Run a parser's tests" 
+    'highlight:Highlight a file' 
+    'build-wasm:Compile a parser to WASM' 
+    'playground:Start local playground for a parser in the browser' 
+    'dump-languages:Print info about all known language parsers'
+  )
+  _describe 'subcommands' subcommands
+else
+  _default
+fi
