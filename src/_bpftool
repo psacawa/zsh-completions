@@ -1,0 +1,42 @@
+#compdef bpftool
+
+local -a bpf_objects=(map prog cgroup perf net feature)
+local -a map_commands=(show list create dump update lookup getnext delete pin event_pipe help)
+local -a prog_commands=(show list dump jited dump xlated pin load attach   detach  help)
+local -a cgroup_commands=(show list attach detach help)
+local -a perf_commands=(show list help)
+local -a net_commands=(show list help)
+local -a feature_commands=(probe help)
+
+
+# TODO 03/02/20 psacawa: wyłączność opcji
+local common_options=(
+  '(-V,--version)-V' \
+  '(-V,--version)--version' \
+  '(-h,--help)-h' \
+  '(-h,--help)--help' \
+  '(-j,--json)-j' \
+  '(-j,--json)--json' \
+  '(-p,--pretty)-p' \
+  '(-p,--pretty)--pretty'
+)
+
+
+_arguments -C \
+  $common_options \
+  ':object:->object' \
+  ':command:->command'
+
+case $state in
+  object)
+    _describe -t objects object bpf_objects
+    ;;
+  command)
+    _describe 'object object' "$words[2]_commands"
+    ;;
+  subcommand)
+    ;;
+  *)
+    # TODO 03/02/20 psacawa: finish this
+    return 1;
+esac
