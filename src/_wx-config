@@ -1,0 +1,28 @@
+#compdef wx-config
+
+_arguments -C \
+  '--prefix: :_directories' \
+  '--exec-prefix: :_directories' \
+  '--release: :' \
+  '--version-full: :' \
+  '--list: :' \
+  '--selected-config: :' \
+  '--host=HOST: :' \
+  '--toolkit=TOOLKIT: :' \
+  '--universal: :(yes no)' \
+  '--unicode: :(yes no)' \
+  '--static: :(yes no)' \
+  '--debug: :(yes no)' \
+  '--version: :' \
+  '--basename: :' \
+  '--cc: :' \
+  '--cxx: :' \
+  '--cppflags: :' \
+  '--cxxflags: :' \
+  '--cflags: :' \
+  '--rescomp: :' \
+  '--linkdeps: :' \
+  '--ld: :' \
+  '--utility=UTIL: :' \
+  '--libs: :' \
+  '--optional-libs: :'
