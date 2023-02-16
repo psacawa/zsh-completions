@@ -1,3 +1,5 @@
-#compdef _pstree
+#compdef pstree
 
-_gnu_generic
+_arguments -s \
+  "1: :_pids" \
+  '*:arg: _default' --
