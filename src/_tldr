@@ -1,7 +1,12 @@
 #compdef tldr
 
-local -a pages oses
-pages=$(tldr -a1)
+local -a tldr_pages oses
+# [, [[, oraz g[ problematyczne
+cache_name="tldr-pages"
+if ! _retrieve_cache $cache_name ; then
+  tldr_pages=($(tldr -a1 | grep -v "\["))
+  _store_cache $cache_name tldr_pages
+fi
 oses='( linux osx sunos )'
 
 _arguments \
@@ -21,4 +26,4 @@ _arguments \
   '--sunos[override operating system with SunOS]' \
   '(- *)'{-u,--update}'[update local cache]' \
   '(- *)'{-c,--clear-cache}'[clear local cache]' \
-  "*:page:(${pages})" && return 0
+  "*:page:(${tldr_pages})" && return 0
