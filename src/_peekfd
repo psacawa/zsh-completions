@@ -1,2 +1,2 @@
 #compdef peekfd
-_gnu_generic
+_arguments '1:pid:_pids' '*:arg: _default' --
