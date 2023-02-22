@@ -1,0 +1,2 @@
+#compdef whois
+_arguments '*:arg: _default' -- -l

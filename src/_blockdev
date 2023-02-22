@@ -1,0 +1,2 @@
+#compdef blockdev
+_arguments '*:arg: _default' -- -l

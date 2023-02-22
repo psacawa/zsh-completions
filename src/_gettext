@@ -1,0 +1,2 @@
+#compdef gettext ngettext
+_arguments '*: : _default' -- -l

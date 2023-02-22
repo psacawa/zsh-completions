@@ -1,0 +1,2 @@
+#compdef lsns
+_arguments '*:arg: _default' -- -l

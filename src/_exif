@@ -1,0 +1,2 @@
+#compdef exif
+_arguments '*:arg: _default' -- -l

@@ -1,0 +1,3 @@
+#compdef xgettext
+
+_arguments '-m[use STRING as prefix for msgstr]' '-M[use STRING as suffix for msgstr]'    '*:arg: _default' -- -l -i "(-[mM]*)"
