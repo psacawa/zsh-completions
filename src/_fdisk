@@ -1,0 +1,2 @@
+#compdef fdisk
+_arguments ": :_files -g '/dev/**/*(%)'" -- -l
