@@ -1,0 +1,34 @@
+#compdef auditctl
+
+_arguments \
+  '-a[Append rule to end of <l>ist with <a>ction]: :' \
+  '-A[Add rule at beginning of <l>ist with <a>ction]: :' \
+  '-b[Set max number of outstanding audit buffers]: :' \
+  '-c[Continue through errors in rules]: :' \
+  '-C[Compare collected fields if available:]: :' \
+  '-d[Delete rule from <l>ist with <a>ction]: :' \
+  '-D[Delete all rules and watches]: :' \
+  '-e[Set enabled flag]: :' \
+  '-f[Set failure flag]: :' \
+  '-F[Build rule: field name, operator(=,!=,<,>,<=,]: :' \
+  '-h[Help]: :' \
+  '-i[Ignore errors when reading rules from file]: :' \
+  '-k[Set filter key on audit rule]: :' \
+  '-l[List rules]: :' \
+  '-m[Send a user-space message]: :' \
+  '-p[Set permissions filter on watch]: :' \
+  "-q[make subtree part of mount point's dir watches]: :" \
+  '-r[Set limit in messages/sec (0=none)]: :' \
+  '-R[read rules from file]: :_files' \
+  '-s[Report status]: :' \
+  '-S[Build rule: syscall name or number]: :' \
+  '--signal[Send the specified signal to the daemon]: :' \
+  '-t[Trim directory watches]: :' \
+  '-v[Version]: :' \
+  '-w[Insert watch at <path>]: :_files' \
+  '-W[Remove watch at <path>]: :_files' \
+  '--loginuid-immutable[Make loginuids unchangeable once set]: :' \
+  '--backlog_wait_time[Set the kernel backlog_wait_time]: :' \
+  '--reset-lost[Reset the lost record counter]: :' \
+  '--reset_backlog_wait_time_actual[Reset the actual backlog wait time counter]: :  ' \
+  '*: : _files' 
