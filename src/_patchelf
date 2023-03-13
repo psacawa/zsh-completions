@@ -1,0 +1,24 @@
+#compdef patchelf
+
+_arguments \
+  '--set-interpreter: :' \
+  '--page-size: :' \
+  '--print-interpreter' \
+  '--print-soname'		\
+  '--set-soname: :' \
+  '--set-rpath: :' \
+  '--add-rpath: :' \
+  '--remove-rpath: :' \
+  '--shrink-rpath: :' \
+  '--allowed-rpath-prefixes: :' \
+  '--print-rpath' \
+  '--force-rpath: :' \
+  '--add-needed: :' \
+  '--remove-needed: :' \
+  '--replace-needed: :' \
+  '--print-needed' \
+  '--no-default-lib' \
+  '--clear-symbol-version: :' \
+  '--output: :' \
+  '--debug' \
+  '--version'
