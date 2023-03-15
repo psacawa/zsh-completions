@@ -1,0 +1,41 @@
+#compdef ar
+
+_ar_contents () {
+  # TODO 15/03/20 psacawa: bardziej dokładna logika
+  # odnajduje nazwe pliku
+  local archive_file=${${words:#-*}[2]}
+  local -a ar_contents
+  ar_contents=($(ar t $archive_file))
+  _describe contents ar_contents
+}
+
+_arguments -s \
+  '-d[usuwa plik(i) z archiwum]' \
+  '-m[move file(s) in the archive]' \
+  '-p[wyświetla plik(i) znajdujące się w archiwum]' \
+  '-q[szybkie dodanie plik(ów) do archiwum]' \
+  '-r[zastąpienie obecnych albo dodanie nowych plik(ów) do archiwum]' \
+  '-s[act as ranlib]' \
+  '-t[display contents of the archive]' \
+  '-x[rozpakowuje plik(i) z archiwum]' \
+  '-a[umieść pliki po $nazwa-członu]' \
+  '-b[umieść pliki przed $nazwa-członu (działa jak i)]' \
+  '-D[use zero for timestamps and uids/gids (default)]' \
+  '-U[use actual timestamps and uids/gids]' \
+  '-N[use instance count]' \
+  '-f[przytnij wprowadzone nazwy plików]' \
+  '-P[użyj pełnych ścieżek przy porównywaniu]' \
+  '-o[zachowaj oryginalne daty]' \
+  '-O[display offsets of files in the archive]' \
+  '-u[only replace files that are newer than current archive contents]' \
+  '-c[nie ostrzegaj, jeżeli trzeba było utworzyć bibliotekę]' \
+  '-s[create an archive index (cf. ranlib)]' \
+  '-S[nie twórz tablicy symboli]' \
+  '-T[make a thin archive]' \
+  '-v[be verbose]' \
+  '-V[wyświetl numer wersji]' \
+  '--target:[the target object format as BFDNAME]: :' \
+  '--output:[the output directory for extraction operations]: :_directories' \
+  '--plugin:[odpowiednią wtyczkę]: :' \
+  '1:arg: _default' \
+  '*:content:_ar_contents'
