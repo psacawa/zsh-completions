@@ -64,6 +64,11 @@ while true;do
       descriptors=( ":: :_nft_${line[1]}" )
       nextstate=$line[1]
     ;;
+    (describe)
+      # dodane
+      descriptors=( ":: :_nft_${line[1]}" )
+      nextstate=$line[1]
+    ;;
     (monitor)
       descriptors=( ":: : _nft_mon_filter"  )
       nextstate="mon1"
@@ -87,7 +92,7 @@ while true;do
   (mon1)
     case $line[1] in
     (new | destroy)
-#      descriptors=( ":: :_nft_mon_keywords"  ":: :_nft_out_format")
+      #      descriptors=( ":: :_nft_mon_keywords"  ":: :_nft_out_format")
       descriptors=( ":: : _nft_mon_keywords")
       nextstate="mon1"
     ;;
@@ -375,14 +380,27 @@ _nft_list(){
     "tables:list all tables (undocumented)"
     "table:list all chains and rules of the specified table"
     "chain:list all rules of the specified chain"
+    "chains:list all chains"
+    "hooks:list all hooks"
     "set:display the elements in the specified set"
+    "sets:list all sets"
     "map:display the elements in the specified map"
+    "maps:list all maps"
     "flowtable:list all flowtables"
     "ct\ helper:display stateful information the ct helper holds"
     "counter:display stateful information the counter holds"
+    "counters:list all counters"
     "quota:display stateful information the quota holds"
+    "quotas:list all quotas"
   )
   _describe -t commands 'nft list' commands "$@"
+}
+
+# dodane
+_nft_describe(){
+  # typy które można opisać
+  local types=(day hour time devgroup iface_index iface_type ifkind ifname ether_addr ether_type arp_op inet_proto inet_service ipv4_addr ipv6_addr ct_dir ct_event ct_label ct_state ct_status gid mark pkt_type realm uid)
+  _describe -t types 'types' types
 }
 
 _nft_rename(){
