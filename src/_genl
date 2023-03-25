@@ -1,0 +1,31 @@
+#compdef genl
+
+local -a cmds=(list monitor get policy help)
+
+_genl_id () {
+  ids=($(_call_program ids 'genl ctrl list' | grep "ID:" | awk '{print $2}'))
+  _describe -t  ids ids ids
+}
+
+_genl_name () {
+  names=($(_call_program names 'genl ctrl list' | grep "Name:" | awk '{print $2}'))
+  _describe -t  names names names
+}
+
+
+_arguments \
+  '1: :(ctrl)' \
+  "2: :($cmds)" \
+  "3: :->$words[3]"
+
+if [[ "$state" =~  "get|policy" ]]; then
+  params=(name id)
+  _describe -t params 'params' params
+fi
+
+case "$words[4]" in
+  id)
+  _genl_id;;
+  name)
+  _genl_name;;
+esac
