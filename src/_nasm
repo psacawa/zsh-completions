@@ -1,0 +1,19 @@
+#compdef nasm
+
+local formats=(bin ith srec aout aoutb coff elf32 elf64 elfx32 as86 obj win32 win64 ieee macho32 macho64 dbg elf macho win)
+
+local debug_formats=(dwarf stabs)
+
+_nasm_formats () {
+  _describe -t formats formats formats
+}
+_nasm_debug_formats (){
+  _describe -t debug_formats debug_formats debug_formats
+}
+
+
+_arguments  \
+    '-w[promote all warnings to errors (also -Werror)]' \
+    '-f[output format]: :_nasm_formats' \
+    '-F[debug symbol output format]: :_nasm_debug_formats' \
+  '*:arg: _default' --
