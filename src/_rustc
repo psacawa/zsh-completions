@@ -1,3 +1,24 @@
 #compdef rustc
 
-_gnu_generic
+local -a cratetypeopts=(bin lib rlib dylib cdylib staticlib proc-macro)
+
+local -a emitopts=(asm llvm-bc llvm-ir obj metadata link dep-info mir)
+
+local -a printopts=(crate-name file-names sysroot target-libdir cfg calling-conventions target-list target-cpus target-features relocation-models code-models tls-models target-spec-json all-target-specs-json native-static-libs stack-protector-strategies link-args)
+
+_rustc_unstable_options () {
+ _describe -t unstable expl "($(rustc -Z help | awk '/--/{split ($2, res, /=/); print res[1]}'))"
+}
+
+_rustc_codegen_options () {
+ _describe -t codegen expl "($(rustc -C help | awk '/--/{split ($2, res, /=/); print res[1]}'))"
+}
+
+
+_arguments \
+  '--crate-type: :($cratetypeopts)' \
+  '--emit: :($emitopts)' \
+  '--print: :($printopts)' \
+  '-Z[unstable options]: :{_rustc_unstable_options}' \
+  '-C[codegen options]: :{_rustc_codegen_options}' \
+  '*:arg: _default' --
