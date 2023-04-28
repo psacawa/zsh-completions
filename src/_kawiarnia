@@ -1,0 +1,11 @@
+#compdef kawiarnia
+
+_kawiarnie () {
+  local -a output=("${(f):-$(psql -X -t --csv -c 'select id, nazwa from kawiarnie')}")
+  local -a _kawiarnie=(${output/,/:})
+  _describe kawiarne _kawiarnie
+}
+
+_arguments \
+  '-l' '-h' \
+  '1: :_kawiarnie'
