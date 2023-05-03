@@ -1,0 +1,5 @@
+#compdef -value-,RUST_LOG,-default-
+
+local -a values=(error warn info debug trace)
+
+_describe "expl" values
