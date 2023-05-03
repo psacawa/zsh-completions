@@ -1,0 +1,31 @@
+#compdef -value-,GTK_DEBUG,-default-
+# czy -default- ma jakiekolwiek znaczenie?
+
+# https://docs.gtk.org/gtk4/running.html
+
+local -a values=(
+  actions
+  builder
+  builder-objects
+  geometry
+  icontheme
+  iconfallback
+  keybindings
+  modules
+  printing
+  size-request
+  text
+  tree
+  constraints
+  layout
+  acccessibility
+  interactive
+  no-css-cache
+  touchscreen
+  snapshot
+  invert-text-dir
+  all
+  help
+)
+
+_values -s ,  expl $values
