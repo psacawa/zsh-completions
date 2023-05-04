@@ -1,3 +1,4 @@
 #compdef systool
 
-_arguments '-m[wybrany moduł]:module:($(cut -f1 -d\  </proc/modules))' '*:arg: _default' --
+# w _arguments potrzebujemy dla ':' znak uwalniania
+_arguments "-m[wybrany moduł]:module:(${:-/sys/module/*(\:t)})" '*:arg: _default' --
