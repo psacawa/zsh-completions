@@ -1,0 +1,61 @@
+#compdef iw
+
+local -a objects=(dev phy reg)
+local -a toplevel_cmds=(event)
+
+local opts=(
+  '--debug[enable netlink debugging]: :'
+  '--version[show version]: :'
+)
+
+local event_opts=(
+  '-t:print timestamp' 
+  '-T:print absolute, human-readable timestamp' 
+  '-r:print relative timestamp' 
+  '-f:print full frame for auth/assoc etc.'
+)
+
+_iw_wiphys () {
+  local wiphys=($(iw phy | grep -E "^Wiphy" | cut -f2 -d\ )) 
+  _describe "fizyczne interfejsy bezprzewodowe" wiphys
+}
+# alternatywnie _net_interfaces
+_iw_devs () {
+  local widevs=($(iw dev | grep -E "\bInterface\b" | awk '{print $2}')) 
+  _describe "urządzenia bezprzewodowe" widevs
+}
+
+
+local -a iw_dev_cmds=(ap auth cac connect cqm del disconnect ftm get ibss info interface link measurement mesh mesh_param mgmt mpath mpp ocb offchannel roc scan set station survey switch vendor)
+local -a iw_dev_settable=( bitrates monitor meshid type 4addr noack_map peer mcast_rate tidconf mesh_param freq freq channel txpower power_save)
+local -a iw_dev_gettable=(mesh_parampower_save)
+_iw_dev_cmds() {
+  _describe "iw dev commands" iw_dev_cmds
+}
+
+local -a iw_phy_cmds=(channels coalesce get hwsim info interface reg set wowlan)
+local -a iw_phy_settable=(name freq freq channel frag rts retry netns coverage distance txpower antenna txq sar_specs)
+local -a iw_phy_gettable=(txq)
+_iw_phy_cmds () {
+  _describe "iw phy commands" iw_phy_cmds
+}
+
+_arguments \
+  "1: :($objects $toplevel_cmds)" \
+  "2: :->value" \
+  "3: :->commands"
+
+case $state in
+  value)
+    case ${words[2]} in
+      dev) _iw_devs ;;
+      phy) _iw_wiphys ;;
+    esac
+    ;;
+  commands)
+    case ${words[2]} in
+      event) _arguments "{event_opts}" ;;
+      *) _iw_$words[2]_cmds  ;;
+    esac
+    ;;
+esac
