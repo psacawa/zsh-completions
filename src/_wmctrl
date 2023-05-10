@@ -1,0 +1,19 @@
+#compdef wmctrl
+
+local properties=(modal sticky maximized_vert maximized_horz shaded skip_taskbar skip_pager hiddenfullscreen above below)
+
+_wmctrl_properties () {
+  _sep_parts '(add remove toggle)' "," "(${properties})"
+}
+
+_wmctrl_win() {
+  local -a win
+  if (( ${words[(Ie)-i]} )); then
+    win=("${(f)$(wmctrl -l | perl -lane 'print "@F[0]:@F[3..$#F]"')}")
+  else
+    win=("${(f)$(wmctrl -l | perl -lane 'print "@F[3..$#F]"')}")
+  fi
+  _describe windows win
+}
+
+_arguments '-a:raise window:_wmctrl_win' '-b:manipulate window properties:_wmctrl_properties' --
