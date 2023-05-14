@@ -1,0 +1,26 @@
+#compdef pkaction pkcheck
+
+_pkactions_actions () {
+  local out=("${(f)$(pkaction)}")
+  _describe "Akcje" out
+}
+
+if [[ $service == pkaction ]]; then
+  _arguments  \
+    '--version: :' \
+    '--help: :' \
+    '--verbose: :' \
+    '--action-id: :_pkactions_actions'
+elif [[ $service == pkcheck ]]; then
+  _arguments \
+    '--action-id: :_pkactions_actions' \
+    '--allow-user-interaction: :' \
+    '--detail: :' \
+    '--enable-internal-agent: :' \
+    '--help: :' \
+    '--list-temp: :' \
+    '--process: :_pids' \
+    '--revoke-temp: :' \
+    '--system-bus-name: :' \
+    '--version: :'
+fi
