@@ -1,4 +1,4 @@
-#compdef pkaction pkcheck
+#compdef pkaction pkcheck pkexec
 
 _pkactions_actions () {
   local out=("${(f)$(pkaction)}")
@@ -23,4 +23,12 @@ elif [[ $service == pkcheck ]]; then
     '--revoke-temp: :' \
     '--system-bus-name: :' \
     '--version: :'
+elif [[ $service == pkexec ]]; then
+  _arguments \
+    '--version: :' \
+    '--help: :' \
+    '--user: :_users' \
+    '--disable-internal-agent: :' \
+    '(-)1: :{_command_names -e}' \
+    '*:: :_normal'
 fi
