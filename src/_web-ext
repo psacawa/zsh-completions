@@ -1,0 +1,11 @@
+#compdef web-ext
+
+local subcmds=(
+  'build'
+  'sign'
+  'run'
+  'lint'
+  'docs'
+)
+
+_arguments '1: :($subcmds)' '*:arg: _default' --
