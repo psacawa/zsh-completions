@@ -1,0 +1,49 @@
+#compdef xdg-mime
+
+local -a options=( --help --manual --version)
+local -a subcmds=(query default install uninstall)
+
+_xdg-mime_mimetypes() {
+  local types=($(cat /usr/share/mime/types))
+  _describe  types types
+}
+
+_xdg-mime_query () {
+  _arguments '2: :(filetype default)'
+  case $words[3] in
+    default) _xdg-mime_mimetypes ;;
+    filetype) _files ;;
+  esac
+}
+
+_xdg-mime_default () {
+  local applications=(/usr/share/applications/*.desktop(:t))
+   _describe applications applications
+   _arguments \
+     "2: :($applications)" \
+     "3: :_xdg-mime_mimetypes"
+
+}
+
+
+_arguments -s \
+  $options \
+  "(-)1: :($subcmds)"
+
+
+case $words[2] in
+  query)
+    _xdg-mime_query;;
+  default)
+    _xdg-mime_default;;
+esac
+
+# case $words[1] in
+#   query)
+#   default)
+#   install)
+#   uninstall)
+# esac
+
+  
+# _describe opts opts "${_xdg-mime_options_}"
