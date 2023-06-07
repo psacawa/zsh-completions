@@ -54,15 +54,13 @@ _cheat() {
     '(- 1 *)'{-l,--list}'[List cheatsheets]: :->full' \
     '(- 1 *)'{-s,--search}'[Search cheatsheets for <keyword>]: :->full' \
     '(- 1 *)'{-v,--version}'[display version and copyright information]: :->full' \
+    '-p[section]: :(community personal)' \
+    '1: :->cheats'
 
     case "$state" in
     (full)
     ;;
     (cheats)
-        _cheat_load_cheats
-        _describe -t cheats 'cheats' cheats
-    ;;
-    (*)
         _cheat_load_cheats
         _describe -t cheats 'cheats' cheats
     ;;
