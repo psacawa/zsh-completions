@@ -22,9 +22,9 @@ local common_options=(
 )
 
 
-_arguments -C \
+_arguments -n \
   $common_options \
-  ':object:->object' \
+  '1:object:->object' \
   ':command:->command'
 
 case $state in
@@ -32,7 +32,8 @@ case $state in
     _describe -t objects object bpf_objects
     ;;
   command)
-    _describe 'object object' "$words[2]_commands"
+    echo $words[-1]
+    _describe 'object object' "${words[$NORMARG]}_commands"
     ;;
   subcommand)
     ;;
