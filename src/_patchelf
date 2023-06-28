@@ -21,4 +21,5 @@ _arguments \
   '--clear-symbol-version: :' \
   '--output: :' \
   '--debug' \
-  '--version'
+  '--version' \
+  '*: :_files'
