@@ -31,6 +31,9 @@ local -a iw_dev_settable=( bitrates monitor meshid type 4addr noack_map peer mca
 local -a iw_dev_gettable=(mesh_parampower_save)
 _iw_dev_cmds() {
   _describe "iw dev commands" iw_dev_cmds
+  case $words[4] in
+    get|set) _arguments "5: :(\$iw_dev_${words[4]}table)" ;;
+  esac
 }
 
 local -a iw_phy_cmds=(channels coalesce get hwsim info interface reg set wowlan)
