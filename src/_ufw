@@ -64,7 +64,6 @@ _ufw_logging() {
     _describe -t additional 'level' additional
 }
 
-
 _ufw_delete() {
     local rules complrules second
 
@@ -83,6 +82,56 @@ _ufw_delete() {
 
     _describe -t complrules 'Rules' complrules
 }
+
+_ufw_show () {
+  local -a reports
+  reports=(
+     "raw"
+     "builtins"
+     "before-rules"
+     "user-rules"
+     "after-rules"
+     "logging-rules"
+     "listening"
+     "added"
+  )
+  _describe -t reports 'reports' reports
+}
+
+_ufw_status () {
+  local -a display_options
+  display_options=(
+    "numbered"
+    "verbose"
+  )
+  _describe -t display_options 'display options' display_options
+}
+
+_ufw_rule () {
+  local last keywords 
+  keywords=(port on proto to from on)
+  last="${words[-2]}" 
+  case "$last" in
+    (on)
+        _net_interfaces
+    ;;
+    (to|from)
+        local -a direction
+        direction=(any)
+        _describe direction 'direction' direction
+    ;;
+    (proto)
+      local protocols
+      protocols=(tcp udp) # sa też inne
+      _describe protocols 'protocols' protocols
+    ;;
+    (*)
+      _ports
+      _describe keywords "keywords" keywords
+    ;;
+  esac
+}
+
 
 _ufw() {
     local curcontext="$curcontext" ret=1
@@ -123,11 +172,20 @@ _ufw() {
          local cmd
          cmd=$words[1]
          case "$cmd" in
+             (status)
+                 _ufw_status && ret=0
+             ;;
              (logging)
                  _ufw_logging && ret=0
              ;;
              (delete)
                  _ufw_delete && ret=0
+             ;;
+             (show)
+                 _ufw_show && ret=0
+             ;;
+             (allow|deny|reject)
+                 _ufw_rule && ret=0
              ;;
              (*)
                  _default && ret=0
