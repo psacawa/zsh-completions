@@ -1,0 +1,2 @@
+#compdef fls
+_arguments '*:arg: _default' --

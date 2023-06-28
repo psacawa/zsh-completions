@@ -1,0 +1,2 @@
+#compdef lsb_release
+_gnu_generic

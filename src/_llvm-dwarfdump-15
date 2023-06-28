@@ -1,0 +1,2 @@
+#compdef llvm-dwarfdump-15
+_arguments '*:arg: _default' --

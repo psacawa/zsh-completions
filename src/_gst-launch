@@ -1,0 +1,9 @@
+#compdef -p gst-launch*
+
+local -a _gst_plugins_ _gst_factories_
+
+_gst_inspect_output_="$(gst-inspect-1.0)"
+
+_gst_factories_=($(awk '{gsub(/:/, "", $2); print $2 }' <<< "$_gst_inspect_output_"))
+
+_describe factories "($_gst_factories_)"

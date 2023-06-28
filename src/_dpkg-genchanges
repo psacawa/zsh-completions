@@ -1,0 +1,2 @@
+#compdef dpkg-genchanges
+_arguments '*:arg: _default' --

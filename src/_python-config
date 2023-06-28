@@ -1,0 +1,17 @@
+#compdef -P python*-config
+
+args=(
+  --prefix
+  --exec-prefix
+  --includes
+  --libs
+  --cflags
+  --ldflags
+  --extension-suffix
+  --help
+  --abiflags
+  --configdir
+  --embed
+)
+
+_describe python-config args

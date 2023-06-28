@@ -1,0 +1,2 @@
+#compdef avrdude
+_gnu_generic

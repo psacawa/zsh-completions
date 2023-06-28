@@ -1,0 +1,2 @@
+#compdef dpkg-architecture
+_arguments '*:arg: _default' --

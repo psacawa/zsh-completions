@@ -1,0 +1,2 @@
+#compdef wlr-randr
+_arguments '*:arg: _default' --

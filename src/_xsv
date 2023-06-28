@@ -1,0 +1,26 @@
+#compdef xsv
+
+local cmds=(
+  cat
+  count
+  fixlengths
+  flatten
+  fmt
+  frequency
+  headers
+  help
+  index
+  input
+  join
+  partition
+  sample
+  reverse
+  search
+  select
+  slice
+  sort
+  split
+  stats
+  table
+)
+_describe xsv cmds

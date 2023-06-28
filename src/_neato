@@ -1,0 +1,2 @@
+#compdef neato
+_arguments '*:arg: _default' --

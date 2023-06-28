@@ -1,0 +1,3 @@
+#compdef keyd
+
+_arguments '1: :(monitor listen reload list-keys input do)'

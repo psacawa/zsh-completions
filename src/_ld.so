@@ -1,0 +1,2 @@
+#compdef ld.so
+_arguments '*:arg: _default' --

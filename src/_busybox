@@ -1,0 +1,14 @@
+#compdef busybox
+
+_busybox_commands () {
+  local cmds=("${(f)$(busybox --list)}")
+  _describe commands cmds
+
+}
+
+_arguments \
+  '--list: :' \
+  '--list-full: :' \
+  '--install: :_directories' \
+  '(-)1:commands:{_busybox_commands}' \
+  '*:: :{_normal}'

@@ -1,0 +1,2 @@
+#compdef pdftocio
+_arguments '*:arg: _default' --

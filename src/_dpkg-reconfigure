@@ -1,0 +1,2 @@
+#compdef dpkg-reconfigure
+_arguments '*:arg: _default' --

@@ -1,0 +1,2 @@
+#compdef glib-compile-resources
+_arguments '*:arg: _default' --

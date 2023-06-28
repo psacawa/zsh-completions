@@ -1,0 +1,2 @@
+#compdef as
+_arguments '-a: :(c d g h l m n s)' '*:arg: _default' -- -i "(-[a]*)"

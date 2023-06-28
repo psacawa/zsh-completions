@@ -1,0 +1,2 @@
+#compdef msgfilter
+_arguments '1: :_command' '*:arg: _default' -- -l

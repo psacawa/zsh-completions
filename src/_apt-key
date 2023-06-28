@@ -1,0 +1,9 @@
+#compdef apt-key
+
+# deprecated
+
+local -a cmds=(add del export exportall update net-update list finger adv)
+
+_keys=
+
+_arguments '1:cmds:($cmds)' '*: :_default'

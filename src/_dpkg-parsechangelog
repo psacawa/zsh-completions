@@ -1,0 +1,2 @@
+#compdef dpkg-parsechangelog
+_arguments '*:arg: _default' --

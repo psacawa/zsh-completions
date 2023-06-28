@@ -1,0 +1,2 @@
+#compdef dpkg-mergechangelogs
+_arguments '*:arg: _default' --

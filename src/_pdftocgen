@@ -1,0 +1,2 @@
+#compdef pdftocgen
+_arguments '*:arg: _default' --

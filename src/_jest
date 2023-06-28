@@ -1,0 +1,2 @@
+#compdef jest -P */jest
+_gnu_generic

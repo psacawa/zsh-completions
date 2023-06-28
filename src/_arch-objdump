@@ -1,0 +1,3 @@
+#compdef avr-objdump xtensa-lx106-elf-objdump
+
+_objdump

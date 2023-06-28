@@ -1,0 +1,7 @@
+#compdef tshark
+# _gnu_generic
+
+_arguments \
+  "-i: :_net_interfaces" \
+  "-T: :(ek fields json jsonraw pdml ps psml tabs text)" \
+  '*:arg: _default' --

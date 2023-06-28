@@ -1,0 +1,2 @@
+#compdef dpkg-preconfigure
+_arguments '*:arg: _default' --

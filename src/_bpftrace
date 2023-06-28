@@ -1,0 +1,4 @@
+#compdef bpftrace
+
+# _arguments '1: :(a b c)' '*:arg: _default' -- 
+_arguments '*:arg: _default' -- 

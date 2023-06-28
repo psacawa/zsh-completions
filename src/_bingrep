@@ -1,0 +1,2 @@
+#compdef bingrep
+_arguments '*:arg: _default' --

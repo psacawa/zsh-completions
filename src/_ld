@@ -1,0 +1,11 @@
+#compdef ld
+
+_soname () {
+  print PREFIX=$PREFIX
+  local sonames=(/lib/x86_64-linux-gnu/lib*so(@:t))
+  sonames=(${arr%*.so})
+  # echo $sonames 
+  _describe so-names sonames
+}
+
+_arguments '-dynamic-linker: :_files' '-l: :{_soname}' '-l\:: :{_soname}'  '*: :_default' -- 

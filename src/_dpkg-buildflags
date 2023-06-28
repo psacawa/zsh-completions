@@ -1,0 +1,2 @@
+#compdef dpkg-buildflags
+_arguments '*:arg: _default' --

@@ -1,0 +1,2 @@
+#compdef dpkg-genbuildinfo
+_arguments '*:arg: _default' --

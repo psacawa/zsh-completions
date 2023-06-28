@@ -1,0 +1,2 @@
+#compdef moc
+_arguments '*:arg: _default' --

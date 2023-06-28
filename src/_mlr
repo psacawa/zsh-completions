@@ -1,0 +1,128 @@
+#compdef mlr
+
+# TODO 01/02/20 psacawa: general flags, command specific flags
+
+function __mlr_commands() {
+  local commands=(
+    altkv
+    bar
+    bootstrap
+    cat
+    check
+    clean-whitespace
+    count-distinct
+    count
+    count-similar
+    cut
+    decimate
+    fill-down
+    fill-empty
+    filter
+    flatten
+    format-values
+    fraction
+    gap
+    grep
+    group-by
+    group-like
+    having-fields
+    head
+    histogram
+    json-parse
+    json-stringify
+    join
+    label
+    least-frequent
+    merge-fields
+    most-frequent
+    nest
+    nothing
+    put
+    regularize
+    remove-empty-columns
+    rename
+    reorder
+    repeat
+    reshape
+    sample
+    sec2gmtdate
+    sec2gmt
+    seqgen
+    shuffle
+    skip-trivial-records
+    sort
+    sort-within-records
+    stats1
+    stats2
+    step
+    tac
+    tail
+    tee
+    template
+    top
+    unflatten
+    uniq
+    unsparsify
+    help
+  )
+  _describe 'mlr commands' commands
+}
+
+local __mlr_help_topics=(
+  topics
+  basic-examples
+  file-formats
+  flags
+  list-separator-aliases
+  list-separator-regex-aliases
+  comments-in-data-flags
+  compressed-data-flags
+  csv-only-flags
+  file-format-flags
+  flatten-unflatten-flags
+  format-conversion-keystroke-saver-flags
+  json-only-flags
+  legacy-flags
+  miscellaneous-flags
+  output-colorization-flags
+  pprint-only-flags
+  profiling-flags
+  separator-flags
+  list-verbs
+  usage-verbs
+  verb
+  list-functions
+  list-function-classes
+  list-functions-in-class
+  usage-functions
+  usage-functions-by-class
+  function
+  list-keywords
+  usage-keywords
+  keyword
+  auxents
+  mlrrc
+  output-colorization
+  type-arithmetic-info
+)
+
+__mlr_help_shorthand=(
+  "-g[mlr help flags]"
+  "-l[mlr help list-verbs]"
+  "-L[mlr help usage-verbs]"
+  "-f[mlr help list-functions]"
+  "-F[mlr help usage-functions]"
+  "-k[mlr help list-keywords]"
+  "-K[mlr help usage-keywords]"
+)
+
+_arguments \
+  $__mlr_help_shorthand \
+  ': :__mlr_commands'   
+    
+
+case $words[2] in
+  help)
+    _describe 'mlr help topics' __mlr_help_topics
+    ;;
+esac

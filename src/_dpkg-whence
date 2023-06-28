@@ -1,0 +1,2 @@
+#compdef dpkg-whence
+_arguments '*:arg: _default' --

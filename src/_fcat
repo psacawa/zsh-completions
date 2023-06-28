@@ -1,0 +1,2 @@
+#compdef fcat
+_arguments '*:arg: _default' --

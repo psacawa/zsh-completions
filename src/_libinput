@@ -1,0 +1,14 @@
+#compdef libinput
+
+local cmds=(
+  'list-devices:List all devices with their default configuration options' 
+  'debug-events:Print events to stdout' 
+  "debug-gui:Display a simple GUI to visualize libinput's events." 
+  'measure:Measure various device properties. See the man page for more info' 
+  'analyze:Analyze device events. See the man page for more info' 
+  'record:Record event stream from a device node. See the man page for more info' 
+  'replay:Replay a previously recorded event stream. See the man page for more info'
+)
+
+_arguments -s \
+  '1: :{_describe cmds cmds}'

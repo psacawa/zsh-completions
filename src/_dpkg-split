@@ -1,0 +1,2 @@
+#compdef dpkg-split
+_arguments '*:arg: _default' --

@@ -1,0 +1,2 @@
+#compdef snappyHexMesh
+_arguments '*:arg: _default' --

@@ -1,0 +1,23 @@
+#compdef xxd-sym
+
+_symbol_defined() {
+  local REPLY=$(eval echo "$words[$CURRENT-1]")
+  if  __object_file; then
+    # local symbols=($(readelf -Ws $REPLY | awk '( NR>3) {split($8, res, /@/); print res[1] }') )
+    local dumpable_symbols=($(
+      readelf -Ws $REPLY |
+      awk '( NR>3) {split($8, res, /@/); print res[1] }') 
+    )
+    local demangled_symbols=("${(f)$( c++filt <<< ${(F)dumpable_symbols})}")
+    # kruche, ale działa
+    for i in {1..$#dumpable_symbols}; do
+      dumpable_symbols[i]="${dumpable_symbols[i]}:${demangled_symbols[i]}"
+    done
+    _describe  symbols dumpable_symbols
+  fi
+}
+
+
+_arguments \
+ '1: :_object_files' \
+ '2: :{_symbol_defined}'

@@ -1,0 +1,2 @@
+#compdef systemd-mount
+_gnu_generic

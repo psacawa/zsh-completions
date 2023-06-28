@@ -1,0 +1,2 @@
+#compdef dpkg-distaddfile
+_arguments '*:arg: _default' --

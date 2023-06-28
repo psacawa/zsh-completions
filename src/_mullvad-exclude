@@ -1,0 +1,3 @@
+#compdef mullvad-exclude
+
+_arguments '*::cmd:_normal'

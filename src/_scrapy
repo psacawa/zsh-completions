@@ -1,0 +1,54 @@
+#compdef scrapy
+
+
+_scrapy_commands_() {
+  local _commands=(
+    "bench:Run quick benchmark test"
+    "check:Check spider contracts"
+    "crawl:Run a spider"
+    "edit:Edit spider"
+    "fetch:Fetch a URL using the Scrapy downloader"
+    "genspider:Generate new spider using pre-defined templates"
+    "list:List available spiders"
+    "parse:Parse URL (using its spider) and print the results"
+    "runspider:Run a self-contained spider (without creating a project)"
+    "settings:Get settings values"
+    "shell:Interactive scraping console"
+    "startproject:Create new project"
+    "version:Print Scrapy version"
+    "view:Open URL in browser, as seen by Scrapy"
+  )
+
+  _describe 'scrapy commands' _commands
+}
+
+_scrapy_runspider () {
+  _values **/spiders/*.py(.)
+}
+
+_scrapy_crawl () {
+  _values **/spiders/*.py(.)
+}
+
+
+_arguments \
+  ': :_scrapy_commands_' \
+  '*::args:->args'
+
+case $words[1] in
+  # bench) _arguments $_scrapy_bench ;;
+  bench) _arguments '*:arg: _default' --;;
+  check) _arguments $_scrapy_check ;;
+  crawl) _scrapy_crawl ;;
+  edit) _arguments $_scrapy_edit ;;
+  fetch) _arguments $_scrapy_fetch ;;
+  genspider) _arguments $_scrapy_genspider ;;
+  list) _arguments $_scrapy_list ;;
+  parse) _arguments $_scrapy_parse ;;
+  runspider) _scrapy_runspider ;;
+  settings) _arguments $_scrapy_settings ;;
+  shell) _arguments $_scrapy_shell ;;
+  startproject) _arguments $_scrapy_startproject ;;
+  version) _arguments $_scrapy_version ;;
+  view) _arguments $_scrapy_view ;;
+esac

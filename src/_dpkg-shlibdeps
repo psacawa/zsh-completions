@@ -1,0 +1,2 @@
+#compdef dpkg-shlibdeps
+_arguments '*:arg: _default' --

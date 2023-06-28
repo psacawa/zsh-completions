@@ -1,0 +1,13 @@
+#compdef airmon-ng
+
+
+# usage: airmon-ng <interface> [channel or frequency]
+
+local cmds=(start stop check)
+local channels=()
+
+
+_arguments \
+  '1: :($cmds)' \
+  '2: :_net_interfaces' \
+  '3: :($channels)'

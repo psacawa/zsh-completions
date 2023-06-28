@@ -1,0 +1,2 @@
+#compdef swig
+_arguments '*:arg: _default' --

@@ -1,0 +1,2 @@
+#compdef screenkey
+_arguments '*:arg: _default' --

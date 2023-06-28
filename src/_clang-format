@@ -1,0 +1,2 @@
+#compdef clang-format
+_arguments '--style: :(LLVM GNU Google Chromium Microsoft Mozilla WebKit)' '*:arg: _default' --

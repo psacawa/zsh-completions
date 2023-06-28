@@ -1,0 +1,2 @@
+#compdef pdfxmeta
+_arguments '*:arg: _default' --

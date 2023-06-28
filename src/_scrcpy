@@ -1,0 +1,2 @@
+#compdef scrcpy
+_arguments '*:arg: _default' --

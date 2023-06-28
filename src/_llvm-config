@@ -1,0 +1,2 @@
+#compdef llvm-config -p llvm-config-*
+_arguments '*:arg: _default' --

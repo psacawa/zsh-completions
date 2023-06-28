@@ -1,0 +1,18 @@
+#compdef bear
+
+_arguments  \
+  '--output[path of the result file (default: compile_commands.json)]: :' \
+  '--verbose[run in verbose mode]: :' \
+  '--append[append result to an existing output file]: :' \
+  '--config[path of the config file]: :' \
+  '--force-preload[force to use library preload]: :' \
+  '--force-wrapper[force to use compiler wrappers]: :' \
+  '--citnames[path to the citnames executable (default: /usr/bin/citnames)]: :' \
+  '--interceptor[path to the intercept executable (default: /usr/bin/intercept)]: :' \
+  '--library[path to the preload library (default: /usr/$LIB/bear/libexec.so)]: :' \
+  '--wrapper[path to the wrapper executable (default: /usr/lib/x86_64-linux-gnu/bear/wrapper)]: :' \
+  '--wrapper-dir[path to the wrapper directory (default: /usr/lib/x86_64-linux-gnu/bear/wrapper.d)]: :' \
+  '--help[print help and exit]: :' \
+  '--version[print version and exit]: :' \
+  '1: :(--)' \
+    ":cmd:_command" '*::arg: _normal' 

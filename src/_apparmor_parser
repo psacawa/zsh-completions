@@ -1,0 +1,2 @@
+#compdef apparmor_parser
+_arguments '1:profile:{_path_files -g "/etc/apparmor.d/**/*(.)"}' '*:arg: _default' --

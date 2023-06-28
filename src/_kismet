@@ -1,0 +1,2 @@
+#compdef kismet
+_arguments '*:arg: _default' --

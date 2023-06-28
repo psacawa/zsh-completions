@@ -1,0 +1,48 @@
+#compdef debtree
+local -a options=(
+  --show-installed
+  --max-providers
+  --show-installed
+  --show-installed
+  --show-rdeps
+  --show-installed
+  --rdeps-depth
+  --max-rdeps
+  --build-dep
+  --build-dep
+  --show-installed
+  --no-al
+  --arch
+  --buildep
+  --with-suggests
+  --no-recommends
+  --with-suggests
+  --no-alternatives
+  --no-provides
+  --max-providers
+  --no-versions
+  --no-conflicts
+  --versioned-conflicts
+  --no-conflicts
+  --max-depth
+  --rdeps-depth
+  --show-rdeps
+  --max-rdeps
+  --no-skip
+  --skiplist
+  --endlist
+  --show-all
+  --no-skip
+  --max-depth
+  --rotate
+  --condense
+  --quiet
+  --verbose
+  --no-skip
+  --show-all
+  --max-depth
+  --skiplist
+  --endlist
+)
+
+_describe options options

@@ -1,0 +1,17 @@
+#compdef bridge
+
+local -a categories=(
+  link 
+  fdb 
+  mdb 
+  vlan 
+  monitor
+  help
+)
+
+if [[ $CURRENT == 3 ]]; then
+  _describe categories categories
+else
+  _default
+fi
+# vim: set ft=zsh :

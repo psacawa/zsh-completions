@@ -1,0 +1,18 @@
+#compdef direnv
+
+local -a options=( \
+  allow \
+  deny \
+  edit \
+  exec \
+  fetchurl \
+  help \
+  hook \
+  prune \
+  reload \
+  status \
+  stdlib \
+  version
+)
+
+_describe direnv options

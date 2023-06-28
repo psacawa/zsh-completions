@@ -1,0 +1,2 @@
+#compdef p0f
+_arguments '*:arg: _default' --

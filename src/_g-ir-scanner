@@ -1,0 +1,2 @@
+#compdef g-ir-scanner
+_arguments '*:arg: _default' --

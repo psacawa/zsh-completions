@@ -1,0 +1,2 @@
+#compdef dpkg-realpath
+_arguments '*:arg: _default' --

@@ -1,0 +1,2 @@
+#compdef dpkg-checkbuilddeps
+_arguments '*:arg: _default' --

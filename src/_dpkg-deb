@@ -1,0 +1,2 @@
+#compdef dpkg-deb
+_arguments '*:arg: _default' --

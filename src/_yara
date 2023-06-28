@@ -1,0 +1,2 @@
+#compdef yara
+_arguments '*:arg: _default' --

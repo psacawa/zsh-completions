@@ -1,0 +1,3 @@
+#compdef _apt-tree
+
+complete -F _comp_pkg_names apt-tree
