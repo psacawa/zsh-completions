@@ -302,6 +302,7 @@ _nft_mon_keywords(){
     'rules:show rule events'
     'elements:show only events of element objects'
     'ruleset:show ruleset events, such as table, chain, rule, set, counters  and  quotas'
+    'trace:show all traced events'
   )
   _describe -t monitor_keywords 'nft monitor' monitor_keywords -J monitor_keywords "$@"
   _nft_out_format
@@ -463,6 +464,17 @@ _nft_table(){
   esac
 }
 
+# dodane
+# TODO 22/03/20 psacawa: podłącz
+_nft_chain() {
+  # # uzupełnij łańcuchy z danej tablicy
+  # local chains=(_call_program -p chains nft -j list table $1  |
+  #   jq -r "(.nftables[].chain //null)|.name")
+
+  # _describe -t  chains chain chains
+
+}
+
 _nft_table_handle(){
   # complete the handles of tables with the specified family (with the table name in the description)
   #$1:protocol family
@@ -513,6 +525,7 @@ _nft_rule_handle(){
   # don't sort those entries alphabetically, so they get shown in the order they are executed in nftables
   _describe -t rules "rule" rules -V "rules"
 }
+
 
 #currently, only the `nft` command is covered by this script.
 _nft "$@"
