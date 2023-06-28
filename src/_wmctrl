@@ -16,4 +16,4 @@ _wmctrl_win() {
   _describe windows win
 }
 
-_arguments '-a:raise window:_wmctrl_win' '-b:manipulate window properties:_wmctrl_properties' --
+_arguments -s '-a:raise window:_wmctrl_win' '-b:manipulate window properties:_wmctrl_properties' --
