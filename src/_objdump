@@ -13,7 +13,7 @@ args=(
   '(-d --disassemble)'-d'[display assembler code of executable sections]'
   '(-r --reloc)'{-r,--reloc}'[display relocation information]'
   '(-s --full-contents)'{-s,--full-contents}'[display the full contents of all sections requested]'
-  \*{-j+,--section=}'[only display information for section]:section:(.bss .data .dynamic .dynsym .got .interp .shstrtab .symtab .text)'
+  \*{-j+,--section=}'[only display information for section]:section:{_objdump_section}'
 )
 
 _objdump_symbol_dumpable () {
@@ -30,6 +30,14 @@ _objdump_symbol_dumpable () {
       dumpable_symbols[i]="${dumpable_symbols[i]}:${demangled_symbols[i]}"
     done
     _describe  symbols dumpable_symbols
+  fi
+}
+
+_objdump_section () {
+  local REPLY=$(eval echo "$words[-1]")
+  if  __object_file; then
+    local sections=($(rabin2 -jS "$REPLY" | jq -r '.sections[].name') )
+    _describe sections sections
   fi
 }
 
