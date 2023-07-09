@@ -24,11 +24,23 @@ _objdump_symbol_dumpable () {
       readelf -Ws $REPLY |
       awk '( NR>3 && $4 == "FUNC" && $7 != "UND") {split($8, res, /@/); print res[1] }') 
     )
+
+    # jeśli -C/--demangle są już na linii poleceń, uzupełniamy rozkaleczoną wersję symboli
+    demangle_option_present=${words[(I)-C|--demangle]}
     local demangled_symbols=("${(f)$( c++filt <<< ${(F)dumpable_symbols})}")
     # kruche, ale działa
-    for i in {1..$#dumpable_symbols}; do
-      dumpable_symbols[i]="${dumpable_symbols[i]}:${demangled_symbols[i]}"
-    done
+    if [[ "$demangle_option_present" == 0 ]]; then
+      # -C nieobecne
+      for i in {1..$#dumpable_symbols}; do
+        dumpable_symbols[i]="${dumpable_symbols[i]}:${demangled_symbols[i]}"
+      done
+    else;
+      # obecne
+      for i in {1..$#dumpable_symbols}; do
+        dumpable_symbols[i]="${demangled_symbols[i]}:${dumpable_symbols[i]}"
+      done
+    fi
+
     _describe  symbols dumpable_symbols
   fi
 }
