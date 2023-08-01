@@ -58,7 +58,7 @@ local cmake_build_options;cmake_build_options=(
     '-B[Explicitly specify a build directory]:build directory:_path_files -/'
     '-C[Pre-load a script to populate the cache]:initial cache:_files'
     '*-D-[Create a cmake cache entry]:property:_cmake_define_property'
-    '*-U[Remove matching entries from CMake cache]:globbing expression'
+    '*-U[Remove matching entries from CMake cache]:globbing expression:_cmake_cache_variable'
     '-G[Specify a makefile generator]:generator:_cmake_generators'
     '-T[Specify toolset name if supported by generator]:toolset name'
     '-A[Specify platform name if supported by generator]:platform name'
@@ -115,6 +115,20 @@ local cmake_build_options;cmake_build_options=(
 
     ':cmake project:_path_files -/'
 )
+
+# dodane przez psacawa - jeśli -B już było na linii poleceniea, odczytaj zmienne z katalogu kompilacji
+(( $+functions[_cmake_cache_variable] )) ||
+_cmake_cache_variable () {
+  local -i idx=${words[(I)-B]}
+  if ((idx > 0 && idx + 1 <= $#words )); then
+    cachefile="${words[((idx+1))]}/CMakeCache.txt"
+    test ! -f $cachefile && return 
+    local -a cachevar_lines=(${(f)"$(grep "^\w" $cachefile)"})
+    # szczęsliwym przypadkiem, format pamięci podręcznej jest też odpowiednia dla zshcompsys!
+    _describe cachevars cachevar_lines
+  fi
+
+}
 
 # ------------------------
 # _cmake_generator_options
