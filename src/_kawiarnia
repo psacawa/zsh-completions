@@ -7,5 +7,7 @@ _kawiarnie () {
 }
 
 _arguments \
-  '-l' '-h' \
+  '-l[wypisz kawiarnie]' '-h[pomoc]' \
+  '-a[dodaj kawiarnię]: :' \
+  '-v[wypisz wizyty do danej kawiarni]: :_kawiarnie' \
   '1: :_kawiarnie'
