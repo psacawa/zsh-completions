@@ -1,0 +1,5 @@
+#compdef clang-tidy
+
+local -a rules=("${(zf)$(clang-tidy -checks=\* --list-checks | awk 'NR!=1' )}")
+
+_arguments {-c,--checks}': :{_values -s, $rules }'  '*:arg: _default' --
