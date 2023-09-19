@@ -1,0 +1,12 @@
+#compdef wshowkeys
+
+_arguments -s  \
+  '-b[bg color]: :' \
+  '-f:[fg color] :' \
+  '-s[special key color]: :'  \
+ '-F[font]: :'  \
+ '-t[timeout]: :' \
+  '-a[where to place it]: :(top left right bottom)' \
+  '-m[margin]: :'
+
+# vim: set ft=zsh :
