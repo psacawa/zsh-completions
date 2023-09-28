@@ -1,0 +1,17 @@
+#compdef git ignore-io
+
+local cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}
+local cache_file=${cache_dir}/git-ignore-io-options
+
+local -a ignore_opts
+
+if test -f ${cache_file}; then
+  # cache hit
+  ignore_opts=($(<${cache_file}))
+else
+  # cache miss
+  ignore_opts=("${(s:,:)$(git ignore-io list)}")
+  echo "$ignore_opts" > ${cache_file}
+fi
+
+_values -s, "ignore options" $ignore_opts
