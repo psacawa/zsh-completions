@@ -1,0 +1,13 @@
+#compdef xxd-range
+
+function _xxd-range_ranges () {
+  echo $pid 
+  pid=$words[2]
+  local -a maps=("${(f)$(sed 's/ +/ /g;s/ /:/' < /proc/$pid/maps)}")
+  for m in  ${maps}; echo $m
+    _describe expl maps
+}
+
+_arguments \
+  '1: :_pids' \
+  '2: :{_xxd-range_ranges}'
