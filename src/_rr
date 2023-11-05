@@ -1,0 +1,5 @@
+#compdef rr
+
+local cmds=( buildid cpufeatures dump explicit-sources filename gdbinit help ls pack ps record replay rerun sources traceinfo)
+
+_arguments '1: :($cmds)' '*:arg: _default' --
