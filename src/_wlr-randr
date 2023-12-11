@@ -1,2 +1,8 @@
 #compdef wlr-randr
-_arguments '*:arg: _default' --
+
+_wlr-randr_outputs () {
+  outputs=($(wlr-randr | grep "^[^ ]" | cut -f1 -d\ ))
+  _describe expl outputs
+}
+
+_arguments '--output: :_wlr-randr_outputs' '*:arg: _default' --
