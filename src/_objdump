@@ -37,7 +37,8 @@ _objdump_symbol_dumpable () {
     else;
       # obecne
       for i in {1..$#dumpable_symbols}; do
-        dumpable_symbols[i]="${demangled_symbols[i]}:${dumpable_symbols[i]}"
+        # uciecka przed dwukropkami : w przestrzeniach nazw oraz klasach c++
+        dumpable_symbols[i]="${demangled_symbols[i]//:/\\:}:${dumpable_symbols[i]}"
       done
     fi
 
