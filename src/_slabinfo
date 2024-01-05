@@ -1,0 +1,31 @@
+#compdef slabinfo
+
+local debugopts=( a f z p u t)
+
+_arguments \
+  '(-a --aliases)'{-a,--aliases}'[Show aliases]' \
+  '(-A --activity)'{-A,--activity}'[Most active slabs first]' \
+  '(-B --Bytes)'{-B,--Bytes}'[Show size in bytes]' \
+  '(-D --display-active)'{-D,--display-active}'[Switch line format to activity]' \
+  '(-e --empty)'{-e,--empty}'[Show empty slabs]' \
+  '(-f --first-alias)'{-f,--first-alias}'[Show first alias]' \
+  '(-h --help)'{-h,--help}'[Show usage information]' \
+  '(-i --inverted)'{-i,--inverted}'[Inverted list]' \
+  '(-l --slabs)'{-l,--slabs}'[Show slabs]' \
+  '(-L --Loss)'{-L,--Loss}'[Sort by loss]' \
+  '(-n --numa)'{-n,--numa}'[Show NUMA information]' \
+  '(-N --lines)'{-N,--lines}'[Show the first K slabs]: :' \
+  '(-o --ops)'{-o,--ops}'[Show kmem_cache_ops]' \
+  '(-P --partial)'{-P,--partial}'[Sort by number of partial slabs]' \
+  '(-r --report)'{-r,--report}'[Detailed report on single slabs]' \
+  '(-s --shrink)'{-s,--shrink}'[Shrink slabs]' \
+  '(-S --Size)'{-S,--Size}'[Sort by size]' \
+  '(-t --tracking)'{-t,--tracking}'[Show alloc/free information]' \
+  '(-T --Totals)'{-T,--Totals}'[Show summary information]' \
+  '(-U --Unreclaim)'{-U,--Unreclaim}'[Show unreclaimable slabs only]' \
+  '(-v --validate)'{-v,--validate}'[Validate slabs]' \
+  '(-X --Xtotals)'{-X,--Xtotals}'[Show extended summary information]' \
+  '(-z --zero)'{-z,--zero}'[Include empty slabs]' \
+  '(-1 --1ref)'{-1,--1ref}'[Single reference]'  \
+  '(-d --debug)'{-da,--debug}'[Switch on debug options]: :{_values -s, debugopts ${debugopts}}' \
+  '1: :{ _files -g "/sys/kernel/slab/^:*(:t)" }'
