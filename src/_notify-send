@@ -1,2 +1,3 @@
 #compdef notify-send
-_gnu_generic
+
+_arguments {-u,--urgency}': :(low normal critical)' '*:arg: _default' --
