@@ -7,28 +7,28 @@ _pkactions_actions () {
 
 if [[ $service == pkaction ]]; then
   _arguments  \
-    '--version: :' \
-    '--help: :' \
-    '--verbose: :' \
+    '--version' \
+    '--help' \
+    '--verbose' \
     '--action-id: :_pkactions_actions'
 elif [[ $service == pkcheck ]]; then
   _arguments \
     '--action-id: :_pkactions_actions' \
-    '--allow-user-interaction: :' \
+    '--allow-user-interaction' \
     '--detail: :' \
-    '--enable-internal-agent: :' \
-    '--help: :' \
-    '--list-temp: :' \
+    '--enable-internal-agent' \
+    '--help' \
+    '--list-temp' \
     '--process: :_pids' \
-    '--revoke-temp: :' \
+    '--revoke-temp' \
     '--system-bus-name: :' \
-    '--version: :'
+    '--version'
 elif [[ $service == pkexec ]]; then
   _arguments \
-    '--version: :' \
-    '--help: :' \
+    '--version' \
+    '--help' \
     '--user: :_users' \
-    '--disable-internal-agent: :' \
+    '--disable-internal-agent' \
     '(-)1: :{_command_names -e}' \
     '*:: :_normal'
 fi
