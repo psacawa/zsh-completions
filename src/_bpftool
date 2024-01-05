@@ -1,6 +1,6 @@
 #compdef bpftool
 
-local -a bpf_objects=(map prog cgroup perf net feature)
+local -a bpf_objects=(prog map link cgroup perf net feature btf gen struct_ops iter)
 local -a map_commands=(show list create dump update lookup getnext delete pin event_pipe help)
 local -a prog_commands=(show list dump jited dump xlated pin load attach   detach  help)
 local -a cgroup_commands=(show list attach detach help)

@@ -1,2 +1,12 @@
-#compdef dot
-_gnu_generic
+#compdef dot neato
+
+_arguments \
+  '-T[format]: :(png svg)' \
+  '-K[layout]: :(dot neato)' \
+  '-ofile[Write output to file]' \
+  "-O[Automatically generate an output filename based on the input filename with a .'format' appended. (Causes all -ofile options to be ignored.)]" \
+
+# nie działa
+# _arguments \
+#   '-q: :(0 1)' \
+#   '*:arg: _default' -- -i "(-[q]*)"
