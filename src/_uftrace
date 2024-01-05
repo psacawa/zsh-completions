@@ -1,0 +1,25 @@
+#compdef uftrace
+
+local cmds=(record replay live report info dump recv graph script tui)
+local debug_domains=(uftrace symbol demangle filter fstack session kernel mcount dynamic event script dwarf)
+local base_fields=(total total-avg total-min total-max self self-avg self-min self-max size call)
+local field_options=($base_fields all none)
+local key_options=($base_fields func)
+local avg_key_options=(avg min max)
+
+local common_options=(
+  {-F,--filter}': :_uftrace_filters'
+  {-N,--notrace}': :_uftrace_filters'
+  {-C,--caller-filter}': :_uftrace_filters'
+  {-T,--trigger}': :_uftrace_triggers'
+  {-D,--depth}': :'
+  {-t,--time-filter}': :'
+  {-Z,--size-filter}': :'
+  {-L,--loc-filter}': :'
+)
+
+_arguments \
+ '1: :($cmds)' \
+ $common_options \
+ '--debug-domain: :{_values -s , "debug domains" "${(zf)debug_domains}"}' \
+ '*:arg: _default' --
