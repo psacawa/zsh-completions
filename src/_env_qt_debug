@@ -1,0 +1,9 @@
+#compdef -value-,QT_QPA_PLATFORM,-default-
+
+local -a platforms=(
+eglfs linuxfb minimal minimalegl offscreen vnc xcb wayland
+# android bsdfb cocoa direct2d directfb haiku integrity ios qnx vkkhrdisplay wasm windows 
+)
+
+_describe -t platforms expl platforms
+
