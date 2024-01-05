@@ -125,7 +125,7 @@ _cmake_cache_variable () {
     test ! -f $cachefile && return 
     local -a cachevar_lines=(${(f)"$(grep "^\w" $cachefile)"})
     # szczęsliwym przypadkiem, format pamięci podręcznej jest też odpowiednia dla zshcompsys!
-    _describe cachevars cachevar_lines
+    _describe "Pamięć Podręczna CMake" cachevar_lines
   fi
 
 }
@@ -399,6 +399,15 @@ _cmake_define_property_names() {
     cmake_lang_desc="${cmake_langs[$cmake_lang]}"
     alternatives+=("${cmake_lang//:/-}-property-names:${cmake_lang_desc} language property name:_cmake_define_lang_property_names -qS= ${cmake_lang} ${cmake_lang_desc}")
   done
+
+  # odczytaj zmienne z pamięci podręcznej
+  local builddir=.
+  local idx=$words[(I)-B]
+  [[ $idx > 0 ]] && builddir=$words[$((idx+1))];
+  local cachefile="${builddir}/CMakeCache.txt" 
+  if [[ -f $cachefile ]]; then
+    alternatives+=("cache:cache:_cmake_cache_variable")
+  fi
 
   _alternative "${alternatives[@]}"
 }
