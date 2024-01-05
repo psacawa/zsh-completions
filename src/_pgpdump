@@ -1,0 +1,2 @@
+#compdef pgpdump
+_arguments '*:arg: _default' --

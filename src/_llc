@@ -1,0 +1,2 @@
+#compdef llc
+_arguments '*:arg: _default' --

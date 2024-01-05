@@ -1,0 +1,2 @@
+#compdef callgrind_annotate
+_arguments '*:arg: _default' --

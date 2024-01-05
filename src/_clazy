@@ -1,0 +1,2 @@
+#compdef clazy
+_arguments '*:arg: _default' --

@@ -1,0 +1,2 @@
+#compdef run-clang-tidy
+_arguments '*:arg: _default' --

@@ -1,0 +1,3 @@
+#compdef signal-state
+
+_arguments '-p[pending]'  '-b[blocked]'  '-i[ignored]'  '-c[caught]'  '-a[all]'  "*: :_pids"

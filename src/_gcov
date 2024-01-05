@@ -1,0 +1,2 @@
+#compdef gcov
+_arguments '*:arg: _default' --

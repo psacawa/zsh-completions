@@ -1,0 +1,2 @@
+#compdef -P llvm-tblgen*
+_arguments '*:arg: _default' --

@@ -1,0 +1,2 @@
+#compdef dbus-update-activation-environment
+_arguments '*:arg: _default' --

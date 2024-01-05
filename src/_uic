@@ -1,0 +1,2 @@
+#compdef uic
+_arguments '*:arg: _default' --

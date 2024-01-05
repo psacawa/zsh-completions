@@ -1,0 +1,2 @@
+#compdef torsocks
+_arguments '*:arg: _default' --

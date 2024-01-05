@@ -1,0 +1,2 @@
+#compdef litecli
+_arguments '*:arg: _default' --

@@ -1,0 +1,10 @@
+#compdef -p *_test
+# Naming scheme used for qt test binaries
+
+function _qt_test_functions () {
+  local -a _tests=("${(f)$($words[1] -functions)}")
+  _tests=(${_tests//\(\)/})
+  _describe -t tests tests _tests 
+}
+
+_arguments '*: :_qt_test_functions' --

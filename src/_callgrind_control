@@ -1,0 +1,2 @@
+#compdef callgrind_control
+_arguments  '1: :_pids'  '*:arg: _default' --

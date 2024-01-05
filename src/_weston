@@ -1,0 +1,2 @@
+#compdef weston
+_arguments '*:arg: _default' --

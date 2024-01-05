@@ -1,0 +1,2 @@
+#compdef rp
+_arguments '*:arg: _default' --

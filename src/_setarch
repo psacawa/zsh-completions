@@ -1,0 +1,2 @@
+#compdef setarch
+_arguments '*:arg: _default' --

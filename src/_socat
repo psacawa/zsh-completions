@@ -1,0 +1,2 @@
+#compdef socat
+_arguments '*:arg: _default' --

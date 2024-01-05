@@ -1,0 +1,2 @@
+#compdef qdoc
+_arguments '*:arg: _default' --

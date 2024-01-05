@@ -1,0 +1,2 @@
+#compdef upower
+_arguments '*:arg: _default' --

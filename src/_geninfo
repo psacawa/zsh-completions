@@ -1,0 +1,2 @@
+#compdef geninfo
+_arguments '*:arg: _default' --

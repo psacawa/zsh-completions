@@ -1,0 +1,2 @@
+#compdef libtree
+_arguments '*:arg: _default' --

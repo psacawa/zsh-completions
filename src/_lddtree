@@ -1,0 +1,2 @@
+#compdef lddtree
+_arguments '*:arg: _default' --
