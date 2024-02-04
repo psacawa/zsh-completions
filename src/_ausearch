@@ -1,2 +1,70 @@
 #compdef ausearch
-_gnu_generic
+
+local types=(all user login user_auth user_acct user_mgmt cred_acq cred_disp user_start user_end user_avc user_chauthtok user_err cred_refr usys_config user_login user_logout add_user del_user add_group del_group dac_check chgrp_id test trusted_app user_selinux_err user_cmd user_tty chuser_id grp_auth system_boot system_shutdown system_runlevel service_start service_stop grp_mgmt grp_chauthtok mac_check acct_lock acct_unlock user_device software_update daemon_start daemon_end daemon_abort daemon_config daemon_rotate daemon_resume daemon_accept daemon_close daemon_err syscall path ipc socketcall config_change sockaddr cwd execve ipc_set_perm mq_open mq_sendrecv mq_notify mq_getsetattr kernel_other fd_pair obj_pid tty eoe bprm_fcaps capset mmap netfilter_pkt netfilter_cfg seccomp proctitle feature_change kern_module fanotify time_injoffset time_adjntpval bpf event_listener uringop openat2 dm_ctrl dm_event avc selinux_err avc_path mac_policy_load mac_status mac_config_change mac_unlbl_allow mac_cipsov4_add mac_cipsov4_del mac_map_add mac_map_del mac_ipsec_addsa mac_ipsec_delsa mac_ipsec_addspd mac_ipsec_delspd mac_ipsec_event mac_unlbl_stcadd mac_unlbl_stcdel mac_calipso_add mac_calipso_del apparmor apparmor_audit apparmor_allowed apparmor_denied apparmor_hint apparmor_status apparmor_error apparmor_kill anom_promiscuous anom_abend anom_link anom_creat integrity_data integrity_metadata integrity_status integrity_hash integrity_pcr integrity_rule integrity_evm_xattr integrity_policy_rule kernel anom_login_failures anom_login_time anom_login_sessions anom_login_acct anom_login_location anom_max_dac anom_max_mac anom_amtu_fail anom_rbac_fail anom_rbac_integrity_fail anom_crypto_fail anom_access_fs anom_exec anom_mk_exec anom_add_acct anom_del_acct anom_mod_acct anom_root_trans anom_login_service anom_login_root anom_origin_failures anom_session resp_anomaly resp_alert resp_kill_proc resp_term_access resp_acct_remote resp_acct_lock_timed resp_acct_unlock_timed resp_acct_lock resp_term_lock resp_sebool resp_exec resp_single resp_halt resp_origin_block resp_origin_block_timed resp_origin_unblock_timed user_role_change role_assign role_remove label_override label_level_change user_labeled_export user_unlabeled_export dev_alloc dev_dealloc fs_relabel user_mac_policy_load role_modify user_mac_config_change user_mac_status crypto_test_user crypto_param_change_user crypto_login crypto_logout crypto_key_user crypto_failure_user crypto_replay_user crypto_session crypto_ike_sa crypto_ipsec_sa virt_control virt_resource virt_machine_id virt_integrity_check virt_create virt_destroy virt_migrate_in virt_migrate_out)
+
+local -a start_times=(now recent this-hour boot today yesterday this-week week-ago this-month this-year checkpoint)
+local -a end_times=(now recent this-hour boot today yesterday this-weekweek-ago this-month this-year)
+
+_arguments \
+  '-m[search based on message type]: :($types)' \
+  {-ui,-uid}'[search based on user id]: :_users' \
+  {-ts,--start}'[starting date & time for search]: :($start_times)' \
+  {-te,--end}'[ending date & time for search]: :($end_times)' \
+  {-te,--end}'[ending date & time for search]: :($end_times)' \
+  {-p,--pid}'[search based on process id]: :_pids' \
+  {-pp,--ppid}'[search based on parent process id]: :_pids' \
+  '*: :_default' --
+
+
+	# -a,--event <Audit event id>	search based on audit event id
+	# --arch <CPU>			search based on the CPU architecture
+	# -c,--comm  <Comm name>		search based on command line name
+	# --checkpoint <checkpoint file>	search from last complete event
+	# --debug			Write malformed events that are skipped to stderr
+	# -e,--exit  <Exit code or errno>	search based on syscall exit code
+	# -escape <option>		escape output
+	# --eoe-timeout secs		End of Event timeout
+	# --extra-keys			add a final column with key information
+	# --extra-labels			add columns of information about subject and object labels
+	# --extra-obj2			add columns of information about a second object
+	# --extra-time			add columns of information about broken down time
+	# -f,--file  <File name>		search based on file name
+	# --format [raw|default|interpret|csv|text] results format options
+	# -ga,--gid-all <all Group id>	search based on All group ids
+	# -ge,--gid-effective <effective Group id>  search based on Effective
+	#         group id
+	# -gi,--gid <Group Id>		search based on group id
+	# -h,--help			help
+	# -hn,--host <Host Name>		search based on remote host name
+	# -i,--interpret			Interpret results to be human readable
+	# -if,--input <Input File name>	use this file instead of current logs
+	# --input-logs			Use the logs even if stdin is a pipe
+	# --just-one			Emit just one event
+	# -k,--key  <key string>		search based on key field
+	# -l, --line-buffered		Flush output on every line
+	# -m,--message  <Message type>	search based on message type
+	# -n,--node  <Node name>		search based on machine's name
+	# -o,--object  <SE Linux Object context> search based on context of object
+	# -r,--raw			output is completely unformatted
+	# -sc,--syscall <SysCall name>	search based on syscall name or number
+	# -se,--context <SE Linux context> search based on either subject or
+	#          object
+	# --session <login session id>	search based on login session id
+	# -su,--subject <SE Linux context> search based on context of the Subject
+	# -sv,--success <Success Value>	search based on syscall or event
+	#         success value
+	# -te,--end [end date] [end time]	ending date & time for search
+	# -ts,--start [start date] [start time]	starting date & time for search
+	# -tm,--terminal <TerMinal>	search based on terminal
+	# -ua,--uid-all <all User id>	search based on All user id's
+	# -ue,--uid-effective <effective User id>  search based on Effective
+	#         user id
+	# -ui,--uid <User Id>		search based on user id
+	# -ul,--loginuid <login id>	search based on the User's Login id
+	# -uu,--uuid <guest UUID>		search for events related to the virtual
+	#         machine with the given UUID.
+	# -v,--version			version
+	# -vm,--vm-name <guest name>	search for events related to the virtual
+	#         machine with the name.
+	# -w,--word			string matches are whole word
+	# -x,--executable <executable name>  search based on executable name
