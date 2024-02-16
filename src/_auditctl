@@ -3,24 +3,74 @@
 local -a lists=(task exit user exclude filesystem)
 local -a actions=(never always)
 
-_list_action () {
+_auditctl_list_action () {
   _sep_parts lists , actions
 }
 
 
-  # nie działa
-  # '-a[Append rule to end of <l>ist with <a>ction]: :{_sep_parts lists , actions}' \
+local -a rule_fields=(
+  a0
+  a1
+  a2
+  a3
+  'arch:The CPU architecture of the syscall. The arch can be'
+  'auid:The  original ID the user logged in with. Its an ab‐'
+  'devmajor:Device Major Number'
+  'devminor:Device Minor Number'
+  'dir:Full Path of Directory to watch. This will  place  a'
+  'egid:Effective Group ID. May be  numeric  or  the  groups'
+  'euid:Effective  User  ID.  May be numeric or the user ac‐'
+  'exe:Absolute path to application  that  while  executing'
+  'exit:Exit  value  from  a syscall. If the exit code is an'
+  'fsgid:Filesystem Group ID. May be numeric  or  the  groups'
+  'fstype:File  system  type. This is used with the filesystem'
+  'fsuid:Filesystem  User  ID. May be numeric or the user ac‐'
+  "filetype:The target file's type. Can  be  either  file,  dir,"
+  'gid:Group ID. May be numeric or the groups name.'
+  'inode:Inode Number'
+  'key:This  is  another  way  of setting a filter key. See'
+  'msgtype:This is used to match the event  record  type'
+  'obj_uid:Object UID'
+  'obj_gid:Object GID'
+  'obj_user:Resource SE Linux User'
+  'obj_role:Resource SE Linux Role'
+  'obj_type:Resource SE Linux Type'
+  'obj_lev_low:Resource SE Linux Low Level'
+  'obj_lev_high:'
+  'path:Full Path of File to watch. It can only be  used  on'
+  'perm:Permission  filter for file operations. See "-p". It'
+  'pers:OS Personality Number'
+  'pid:Process ID'
+  'ppid:Parent Process ID'
+  'saddr_fam:Address   family   number   as   found  in  /usr/in‐'
+  'sessionid:User login session ID'
+  'subj_user:Program SE Linux User'
+  'subj_role:Program SE Linux Role'
+  'subj_type:Program SE Linux Type'
+  'subj_sen:Program SE Linux Sensitivity'
+  'subj_clr:Program SE Linux Clearance'
+  'sgid:Saved Group ID. See getresgid(2) man page.'
+  'success:If the exit value is >= 0 this is true/yes otherwise'
+  'suid:Saved User ID. See getresuid(2) man page.'
+  'uid:User ID. May be numeric or the user account name.'
+)
+
+_auditctl_rule_fields () {
+  # TODO 04/02/20 psacawa: key=value
+  _describe expl rule_fields
+}
+
 _arguments \
-  '-a[Append rule to end of <l>ist with <a>ction]: :->_list_action' \
-  '-A[Add rule at beginning of <l>ist with <a>ction]: :->_list_action' \
+  '-a[Append rule to end of <l>ist with <a>ction]: :->_auditctl_list_action' \
+  '-A[Add rule at beginning of <l>ist with <a>ction]: :->_auditctl_list_action' \
   '-b[Set max number of outstanding audit buffers]: :' \
   '-c[Continue through errors in rules]: :' \
   '-C[Compare collected fields if available:]: :' \
-  '-d[Delete rule from <l>ist with <a>ction]: :->_list_action' \
+  '-d[Delete rule from <l>ist with <a>ction]: :->_auditctl_list_action' \
   '-D[Delete all rules and watches]: :' \
   '-e[Set enabled flag]: :' \
   '-f[Set failure flag]: :' \
-  '-F[Build rule: field name, operator(=,!=,<,>,<=,]: :' \
+  '-F[Build rule: field name, operator(=,!=,<,>,<=,]: :_auditctl_rule_fields' \
   '-h[Help]: :' \
   '-i[Ignore errors when reading rules from file]: :' \
   '-k[Set filter key on audit rule]: :' \
@@ -31,7 +81,7 @@ _arguments \
   '-r[Set limit in messages/sec (0=none)]: :' \
   '-R[read rules from file]: :_files' \
   '-s[Report status]: :' \
-  '-S[Build rule: syscall name or number]: :' \
+  '-S[Build rule: syscall name or number]: :_sys_calls' \
   '--signal[Send the specified signal to the daemon]: :' \
   '-t[Trim directory watches]: :' \
   '-v[Version]: :' \
@@ -44,8 +94,8 @@ _arguments \
   '*: : _files' 
 
 case $state in
-  _list_action)
-    _list_action
+  _auditctl_list_action)
+    _auditctl_list_action
     break
     ;;
   *)
