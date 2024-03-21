@@ -1,0 +1,72 @@
+#compdef ghidra-analyzeHeadless
+# Ghidra Headless Analyzer
+
+GHIDRA_PATH=${GHIDRA_PATH:-/usr/local/share/ghidra/}
+
+function _ghidra_project_name () {
+  # zwykle words[2] == arg 1
+  local projects=($words[2]/*(:t))
+  _describe 'project file' projects
+}
+
+function _ghidra_binary() {
+  local xmllint=$(command which xmllint)
+  if [[ "$xmllint" == "" ]]; then
+    _message "need xmllint for this"
+    return
+  fi 
+
+  local project_dir=$words[2]
+  local prp_files=($project_dir/**/*.prp)
+  local proj_bins=("${(f)$( for f in **/*.prp; xmllint --xpath 'string(//STATE[@NAME="NAME"]/@VALUE)' $f )}")
+  _describe 'project binaries' proj_bins
+}
+
+function _ghidra_script_name () {
+  local script_paths=( ${GHIDRA_PATH}/**/ghidra_scripts )
+  local -a java_scripts py_scripts
+  for p in $script_paths; do
+    java_scripts+=($p/*.java(:t))
+    py_scripts+=($p/*.py(:t))
+    _describe 'java scripts'  java_scripts
+    _describe 'python scripts' py_scripts
+  done
+  
+  # TODO 21/03/20 psacawa: add user scripts  from -scriptPath
+  # local scriptPath_idx=$(( ${words[(I)-scriptPath]}+1))
+  local -i scriptPath_idx=$((${words[(I)-scriptPath]}+1))
+  local -a user_script_paths=( ${(s:;:)words[$scriptPath_idx]} )
+  local user_scripts=(${~user_script_paths}/*(.:t))
+  # FIXME 21/03/20 psacawa: multiple scriptPath
+  _describe 'user scripts' user_scripts
+
+}
+function _ghidra_language() { _message unimplemented }
+function _ghidra_compiler_spec() { _message unimplemented }
+
+_arguments \
+  '1: :_directories'  \
+  "2: :_ghidra_project_name" \
+  '-import: :_files' \
+  '-process: :_ghidra_binary ' \
+  '-preScript: :_ghidra_script_name' \
+  '-postScript: :_ghidra_script_name' \
+  '-scriptPath: :_ghidra_script_paths' \
+  '-propertiesPath: :_directories' \
+  '-scriptlog: :_files' \
+  '-log: :_files' \
+  '-overwrite' \
+  '-recursive' \
+  '-readOnly' \
+  '-deleteProject' \
+  '-noanalysis' \
+  '-processor: :_ghidra_language' \
+  '-cspec: :_ghidra_compiler_spec' \
+  '-analysisTimeoutPerFile: :' \
+  '-keystore: :_files' \
+  '-connect: :_users' \
+  '-p' \
+  '-commit: :' \
+  '-okToDelete' \
+  '-max-cpu: :' \
+  '-loader: :'
